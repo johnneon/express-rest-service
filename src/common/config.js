@@ -1,14 +1,19 @@
-const dotenv = require('dotenv');
-const path = require('path');
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config({
-  path: path.join(__dirname, '../../.env')
+  path: join(__dirname, '../../.env')
 });
 
-module.exports = {
-  PORT: process.env.PORT,
-  NODE_ENV: process.env.NODE_ENV,
-  MONGO_CONNECTION_STRING: process.env.MONGO_CONNECTION_STRING,
-  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
-  AUTH_MODE: process.env.AUTH_MODE === 'true'
-};
+const { env } = process;
+
+export const config = {
+  PORT: env.PORT,
+  NODE_ENV: env.NODE_ENV,
+  MONGO_CONNECTION_STRING: env.MONGO_CONNECTION_STRING,
+  JWT_SECRET_KEY: env.JWT_SECRET_KEY,
+  AUTH_MODE: env.AUTH_MODE === 'true'
+}

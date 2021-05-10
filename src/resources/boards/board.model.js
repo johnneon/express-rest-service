@@ -1,16 +1,14 @@
 import { v4 as uuid } from 'uuid';
 
-export class User {
+export class Board {
   constructor({
     id = uuid(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd'
+    title,
+    columns,
   } = {}) {
     this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
+    this.title = title;
+    this.columns = columns;
   }
 
   static toResponse(user) {
