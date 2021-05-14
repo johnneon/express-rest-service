@@ -1,15 +1,18 @@
-import { fileURLToPath } from 'url';
 import express from 'express';
-import swaggerUI from 'swagger-ui-express';
+import logger from 'morgan';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 import userRouter from './resources/users/user.router.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const app = express();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const swaggerDocument = YAML.load(join(__dirname, '../doc/api.yaml'));
 
+app.use(logger('dev'));
+app.use(cors());
 app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
