@@ -6,12 +6,7 @@ const getUserById = (id) => usersRepo.getUserById(id);
 
 const createUser = ({ body }) => usersRepo.createUser(body);
 
-const updateUserById = ({ body, params }) => usersRepo.updateUserById({
-  name: body.name,
-  login: body.login,
-  password: body.password,
-  id: params.id,
-});
+const updateUserById = ({ body, params }) => usersRepo.updateUserById({ id: params.id, ...body });
 
 const deleteUserById = (id) => usersRepo.deleteUserById(id);
 

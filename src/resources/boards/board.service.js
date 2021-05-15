@@ -6,12 +6,7 @@ const getBoardById = (id) => boardsRepo.getBoardById(id);
 
 const createBoard = ({ body }) => boardsRepo.createBoard(body);
 
-const updateBoardById = ({ body, params }) => boardsRepo.updateBoardById({
-  name: body.name,
-  login: body.login,
-  password: body.password,
-  id: params.id,
-});
+const updateBoardById = ({ body, params }) => boardsRepo.updateBoardById({ id: params.id, ...body });
 
 const deleteBoardById = (id) => boardsRepo.deleteBoardById(id);
 

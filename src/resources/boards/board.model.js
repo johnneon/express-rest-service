@@ -13,6 +13,10 @@ export class Board {
     this.id = id;
     this.title = title;
     this.columns = columns;
+
+    /**
+     * column: { id, title, order }
+     */
   }
 
   static toResponse(board) {
@@ -24,12 +28,6 @@ export class Board {
     const db = new Database();
 
     db.save(this, BOARDS);
-  }
-
-  static update({ name, login, password }) {
-    this.name = name;
-    this.login = login;
-    this.password = password;
   }
 
   static delete(id) {
@@ -45,7 +43,7 @@ export class Board {
     return board;
   }
 
-  static getUserById(id) {
+  static getBoardById(id) {
     const db = new Database();
 
     return db.getById(id, BOARDS);

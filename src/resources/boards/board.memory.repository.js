@@ -12,9 +12,9 @@ const getBoardById = async (id) => {
   return board;
 };
 
-const createBoard = ({ title }) => {
+const createBoard = ({ title, columns }) => {
   try {
-    const board = new Board({ title });
+    const board = new Board({ title, columns });
 
     board.save();
 
@@ -24,9 +24,12 @@ const createBoard = ({ title }) => {
   }
 };
 
-const updateBoardById = (body) => {
+const updateBoardById = async (body) => {
   try {
-    const board = Board.findByIdAndUpdate(body);
+    await Board.delete(body.id);
+    const board = new Board(body);
+
+    board.save();
 
     return board;
   } catch (error) {

@@ -21,19 +21,6 @@ export class Database {
     this[name].push(entity);
   }
 
-  findByIdAndUpdate({id, ...body}, name) {
-    const modelIndex = this[name].findIndex(entity => entity.id === id);
-    const model = this[name][modelIndex];
-
-    Object.entries(body).forEach(([key, value]) => {
-      if (key in body) {
-        model[key] = value;
-      }
-    });
-
-    return model;
-  }
-
   deleteById(id, name) {
     const entityIndex = this[name].findIndex(entity => entity.id === id);
     
@@ -45,6 +32,6 @@ export class Database {
   }
 
   getAll(name) {
-    return this[name];
+    return this[name] || [];
   }
 }

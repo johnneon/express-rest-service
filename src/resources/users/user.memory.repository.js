@@ -24,9 +24,12 @@ const createUser = ({ login, name, password }) => {
   }
 };
 
-const updateUserById = (body) => {
+const updateUserById = async (body) => {
   try {
-    const user = User.findByIdAndUpdate(body);
+    await User.delete(body.id);
+    const user = new User(body);
+
+    user.save();
 
     return user;
   } catch (error) {

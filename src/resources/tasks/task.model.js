@@ -1,36 +1,58 @@
-import {
-  v4 as uuid
-} from 'uuid';
+import { v4 as uuid } from 'uuid';
+import { Database } from '../../db/db.js';
+import { CONSTANTS } from '../../constants.js';
+
+const { TASKS } = CONSTANTS;
 
 export class Task {
   constructor({
     id = uuid(),
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
+    title = 'BOARD',
+    columns = [],
   } = {}) {
     this.id = id;
-    this.title = title
-    this.order = order
-    this.description = description
-    this.userId = userId
-    this.boardId = boardId
-    this.columnId = columnId
+    this.title = title;
+    this.columns = columns;
+
+    /**
+     * column: { id, title, order }
+     */
   }
 
-  static toResponse(user) {
-    const {
-      id,
-      name,
-      login
-    } = user;
-    return {
-      id,
-      name,
-      login
-    };
+  static toResponse(task) {
+    const { id, title, columns } = task;
+    return { id, title, columns };
+  }
+
+  save() {
+    const db = new Database();
+
+    db.save(this, TASKS);
+  }
+
+  static delete(id) {
+    const db = new Database();
+
+    db.deleteById(id, TASKS);
+  }
+
+  static findByIdAndUpdate(body) {
+    const db = new Database();
+    const task = db.findByIdAndUpdate(body, TASKS);
+
+    return task;
+  }
+
+  static getTaskById(id) {
+    const db = new Database();
+
+    return db.getById(id, TASKS);
+  }
+
+  static getAll() {
+    const tasks = new Database().getAll(TASKS);
+
+    return tasks;
   }
 }
+

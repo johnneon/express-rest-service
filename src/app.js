@@ -6,6 +6,8 @@ import { dirname, join } from 'path';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 import userRouter from './resources/users/user.router.js';
+import boardRouter from './resources/boards/board.router.js';
+import taskRouter from './resources/tasks/task.router.js';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -26,5 +28,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/boards', boardRouter);
+app.use('/boards/:boardId/tasks', taskRouter);
 
 export { app };
