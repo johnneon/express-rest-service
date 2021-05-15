@@ -3,4 +3,5 @@ export const CONSTANTS = {
   BOARDS: 'boards',
   COLUMNS: 'columns',
   TASKS: 'tasks',
+  BOARD_ID: 'boardId',
 }

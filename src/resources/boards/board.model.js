@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import { Database } from '../../db/db.js';
 import { CONSTANTS } from '../../constants.js';
+import { NotFoundError } from '../../errors/app.errors.js';
 
-const { BOARDS } = CONSTANTS;
+const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
 
 export class Board {
   constructor({
@@ -27,13 +28,28 @@ export class Board {
   save() {
     const db = new Database();
 
+    if (this.columns?.length > 0) {
+      this.columns = this.columns.map((col) => {
+        if (!col?.id) {
+          const columnWithId = { ...col, id: uuid() };
+          return columnWithId;
+        }
+        return col;
+      });
+    }
+
     db.save(this, BOARDS);
   }
 
   static delete(id) {
-    const db = new Database();
-
-    db.deleteById(id, BOARDS);
+    try {
+      const db = new Database();
+  
+      db.deleteById(id, BOARDS);
+      db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
+    } catch (err) {
+      throw new NotFoundError(BOARDS, id);
+    }
   }
 
   static findByIdAndUpdate(body) {

@@ -1,14 +1,19 @@
 import tasksRepo from './task.memory.repository.js';
 
-const getAll = () => tasksRepo.getAll();
+const getAll = (id) => tasksRepo.getAll(id);
 
-const getTaskById = (id) => tasksRepo.getTaskById(id);
+const getTaskById = ({ params }) => tasksRepo.getTaskById(params.id);
 
-const createTask = ({ body }) => tasksRepo.createTask(body);
+const createTask = ({ body, boardId }) => tasksRepo.createTask({ ...body, boardId});
 
-const updateTaskById = ({ body, params }) => tasksRepo.updateTaskById({ id: params.id, ...body });
+const updateTaskById = ({ body, params, boardId }) => 
+  tasksRepo.updateTaskById({ ...body, id: params.id, boardId });
 
-const deleteTaskById = (id) => tasksRepo.deleteTaskById(id);
+const deleteTaskById = ({ params }) => tasksRepo.deleteTaskById(params.id);
+
+const deleteManyById = (boardId) => tasksRepo.deleteManyById(boardId);
+
+const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);
 
 export {
   getAll,
@@ -16,4 +21,6 @@ export {
   getTaskById,
   deleteTaskById,
   updateTaskById,
+  deleteManyById,
+  unsubscribe
 };

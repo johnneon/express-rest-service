@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { OK, CREATED, NO_CONTENT } from 'http-status-codes';
+import { OK, CREATED, NO_CONTENT, NOT_FOUND } from 'http-status-codes';
 import { Board } from './board.model.js';
 import {
   getAll,
@@ -23,6 +23,9 @@ boardRouter.get('/', async (req, res) => {
 
 boardRouter.get('/:id', async (req, res) => {
   const board = await getBoardById(req.params.id);
+  if (!board) {
+    res.sendStatus(NOT_FOUND);
+  }
   res.status(OK).json(Board.toResponse(board));
 });
 

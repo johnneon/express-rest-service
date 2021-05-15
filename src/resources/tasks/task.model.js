@@ -7,27 +7,36 @@ const { TASKS } = CONSTANTS;
 export class Task {
   constructor({
     id = uuid(),
-    title = 'BOARD',
-    columns = [],
+    title = 'TASK',
+    order = 0,
+    description = 'Some desc',
+    userId = '',
+    boardId = '',
+    columnId = '',
   } = {}) {
     this.id = id;
     this.title = title;
-    this.columns = columns;
-
-    /**
-     * column: { id, title, order }
-     */
+    this.order = order;
+    this.description = description;
+    this.userId = userId;
+    this.boardId = boardId;
+    this.columnId = columnId;
   }
 
   static toResponse(task) {
-    const { id, title, columns } = task;
-    return { id, title, columns };
+    return task;
   }
 
   save() {
     const db = new Database();
 
     db.save(this, TASKS);
+  }
+
+  static deleteManyById(id) {
+    const db = new Database();
+
+    db.deleteManyBySelector({ selector: 'boardId', value: id }, TASKS);
   }
 
   static delete(id) {
@@ -49,9 +58,8 @@ export class Task {
     return db.getById(id, TASKS);
   }
 
-  static getAll() {
-    const tasks = new Database().getAll(TASKS);
-
+  static getAll(id, selector) {
+    const tasks = new Database().getAllBySelector({ selector: selector || 'boardId', value: id }, TASKS);
     return tasks;
   }
 }

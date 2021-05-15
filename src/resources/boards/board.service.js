@@ -1,4 +1,5 @@
 import boardsRepo from './board.memory.repository.js';
+import { deleteManyById } from '../tasks/task.service.js';
 
 const getAll = () => boardsRepo.getAll();
 
@@ -8,7 +9,10 @@ const createBoard = ({ body }) => boardsRepo.createBoard(body);
 
 const updateBoardById = ({ body, params }) => boardsRepo.updateBoardById({ id: params.id, ...body });
 
-const deleteBoardById = (id) => boardsRepo.deleteBoardById(id);
+const deleteBoardById = async (id) => {
+  await boardsRepo.deleteBoardById(id)
+  await deleteManyById(id);
+};
 
 export {
   getAll,
