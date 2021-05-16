@@ -36,7 +36,8 @@ export class Database {
   }
 
   getById(id, name) {
-    return this[name].find(entity => entity.id === id);
+    const condidate = this[name].find(entity => entity.id === id);
+    return condidate;
   }
 
   getAll(name) {

@@ -9,7 +9,6 @@ import userRouter from './resources/users/user.router.js';
 import boardRouter from './resources/boards/board.router.js';
 import taskRouter from './resources/tasks/task.router.js';
 import { transferBoardId } from './utils/transferBoardId.js';
-import { errorHandler } from './errors/errorHandler.js';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +33,5 @@ app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 
 boardRouter.use('/:id/tasks', transferBoardId, taskRouter);
-
-app.use(errorHandler);
 
 export { app };

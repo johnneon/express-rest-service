@@ -7,9 +7,13 @@ export const getAll = async (boardId) => {
 };
 
 export const get = async (id) => {
-  const task = await Task.getTaskById(id);
-
-  return task;
+  try {
+    const task = await Task.getTaskById(id);
+  
+    return task;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const save = async (body) => {
@@ -38,17 +42,29 @@ export const update = async (body) => {
 };
 
 export const remove = async (id) => {
-  await Task.delete(id);
+  try {
+    return await Task.delete(id);
+  } catch (error) {
+    return error;
+  }
 };
 
 export const removeAllById = async (id) => {
-  await Task.deleteManyById(id);
+  try {
+    return await Task.deleteManyById(id);
+  } catch (error) {
+    return error;
+  }
 };
 
 export const unsubscribe = async (userId) => {
-  const tasks = await Task.getAll(userId, 'userId');
-  await tasks.forEach(async task => {
-    await Task.delete(task.id);
-    await new Task({ ...task, userId: null }).save();
-  });
+  try {
+    const tasks = await Task.getAll(userId, 'userId');
+    return await tasks.forEach(async task => {
+      await Task.delete(task.id);
+      await new Task({ ...task, userId: null }).save();
+    });
+  } catch (error) {
+    return error;
+  }
 };

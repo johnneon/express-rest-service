@@ -7,9 +7,13 @@ export const getAll = async () => {
 };
 
 export const get = async (id) => {
-  const user = User.getUserById(id);
-
-  return user;
+  try {
+    const user = User.getUserById(id);
+  
+    return user;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const save = ({ login, name, password }) => {
@@ -38,5 +42,9 @@ export const update = async (body) => {
 };
 
 export const remove = async (id) => {
-  await User.delete(id);
+  try {
+    return await User.delete(id);
+  } catch (error) {
+    return error;
+  }
 };

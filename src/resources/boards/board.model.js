@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { Database } from '../../db/db.js';
 import { CONSTANTS } from '../../constants.js';
-import { NotFoundError } from '../../errors/app.errors.js';
+import { NotFoundError } from '../../errors/notFound.error.js';
 
 const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
 
@@ -14,10 +14,6 @@ export class Board {
     this.id = id;
     this.title = title;
     this.columns = columns;
-
-    /**
-     * column: { id, title, order }
-     */
   }
 
   static toResponse(board) {

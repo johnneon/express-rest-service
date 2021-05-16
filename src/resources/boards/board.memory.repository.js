@@ -1,15 +1,23 @@
 import { Board } from "./board.model.js";
 
 export const getAll = async () => {
-  const boards = Board.getAll();
-
-  return boards;
+  try {
+    const boards = Board.getAll();
+  
+    return boards;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const get = async (id) => {
-  const board = Board.getBoardById(id);
-
-  return board;
+  try {
+    const board = Board.getBoardById(id);
+  
+    return board;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const save = ({ title, columns }) => {
@@ -38,5 +46,9 @@ export const update = async (body) => {
 };
 
 export const remove = async (id) => {
-  await Board.delete(id);
+  try {
+    return await Board.delete(id);
+  } catch (error) {
+    return error;
+  }
 };
