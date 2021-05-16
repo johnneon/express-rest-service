@@ -13,30 +13,30 @@ const taskRouter = Router();
 
 taskRouter.post('/', async (req, res) => {
   const task = await save(req);
-  res.status(CREATED).json(Task.toResponse(task));
+  return res.status(CREATED).json(Task.toResponse(task));
 });
 
 taskRouter.get('/', async (req, res) => {
   const tasks = await getAll(req.boardId);
-  res.json(tasks.map(Task.toResponse));
+  return res.json(tasks.map(Task.toResponse));
 });
 
 taskRouter.get('/:id', async (req, res) => {
   const task = await get(req);
   if (!task) {
-    res.sendStatus(NOT_FOUND);
+    return res.sendStatus(NOT_FOUND);
   }
-  res.status(OK).json(Task.toResponse(task));
+  return res.status(OK).json(Task.toResponse(task));
 });
 
 taskRouter.put('/:id', async (req, res) => {
   const task = await update(req);
-  res.json(Task.toResponse(task));
+  return res.json(Task.toResponse(task));
 });
 
 taskRouter.delete('/:id', async (req, res) => {
   await remove(req);
-  res.sendStatus(NO_CONTENT);
+  return res.sendStatus(NO_CONTENT);
 });
 
 export default taskRouter;

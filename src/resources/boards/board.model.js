@@ -1,24 +1,20 @@
 import { v4 as uuid } from 'uuid';
 import { Database } from '../../db/db.js';
 import { CONSTANTS } from '../../constants.js';
-import { NotFoundError } from '../../errors/notFound.error.js';
+import { Schema } from '../../models/Schema.js';
 
 const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
 
-export class Board {
+export class Board extends Schema {
   constructor({
     id = uuid(),
     title = 'BOARD',
     columns = [],
   } = {}) {
+    super();
     this.id = id;
     this.title = title;
     this.columns = columns;
-  }
-
-  static toResponse(board) {
-    const { id, title, columns } = board;
-    return { id, title, columns };
   }
 
   save() {
@@ -38,14 +34,10 @@ export class Board {
   }
 
   static delete(id) {
-    try {
-      const db = new Database();
-  
-      db.deleteById(id, BOARDS);
-      db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
-    } catch (err) {
-      throw new NotFoundError(BOARDS, id);
-    }
+    const db = new Database();
+
+    db.deleteById(id, BOARDS);
+    db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
   }
 
   static findByIdAndUpdate(body) {

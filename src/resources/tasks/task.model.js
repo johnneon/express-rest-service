@@ -1,10 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import { Database } from '../../db/db.js';
 import { CONSTANTS } from '../../constants.js';
+import { Schema } from '../../models/Schema.js';
 
 const { TASKS } = CONSTANTS;
 
-export class Task {
+export class Task extends Schema {
   constructor({
     id = uuid(),
     title = 'TASK',
@@ -14,6 +15,7 @@ export class Task {
     boardId = '',
     columnId = '',
   } = {}) {
+    super();
     this.id = id;
     this.title = title;
     this.order = order;
@@ -21,10 +23,6 @@ export class Task {
     this.userId = userId;
     this.boardId = boardId;
     this.columnId = columnId;
-  }
-
-  static toResponse(task) {
-    return task;
   }
 
   save() {
