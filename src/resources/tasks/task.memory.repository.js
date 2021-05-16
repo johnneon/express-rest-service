@@ -1,18 +1,18 @@
 import { Task } from "./task.model.js";
 
-const getAll = async (boardId) => {
+export const getAll = async (boardId) => {
   const tasks =  await Task.getAll(boardId);
 
   return tasks;
 };
 
-const getTaskById = async (id) => {
+export const get = async (id) => {
   const task = await Task.getTaskById(id);
 
   return task;
 };
 
-const createTask = async (body) => {
+export const save = async (body) => {
   try {
     const task = new Task(body);
 
@@ -24,7 +24,7 @@ const createTask = async (body) => {
   }
 };
 
-const updateTaskById = async (body) => {
+export const update = async (body) => {
   try {
     await Task.delete(body.id);
     const task = new Task(body);
@@ -37,28 +37,18 @@ const updateTaskById = async (body) => {
   }
 };
 
-const deleteTaskById = async (id) => {
+export const remove = async (id) => {
   await Task.delete(id);
 };
 
-const deleteManyById = async (id) => {
+export const removeAllById = async (id) => {
   await Task.deleteManyById(id);
 };
 
-const unsubscribe = async (userId) => {
+export const unsubscribe = async (userId) => {
   const tasks = await Task.getAll(userId, 'userId');
   await tasks.forEach(async task => {
     await Task.delete(task.id);
     await new Task({ ...task, userId: null }).save();
   });
-};
-
-export default {
-  getAll,
-  createTask,
-  getTaskById,
-  deleteTaskById,
-  deleteManyById,
-  updateTaskById,
-  unsubscribe,
 };

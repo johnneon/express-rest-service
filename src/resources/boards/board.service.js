@@ -1,23 +1,16 @@
-import boardsRepo from './board.memory.repository.js';
-import { deleteManyById } from '../tasks/task.service.js';
+import * as boardsRepo from './board.memory.repository.js';
+import { removeAllById } from '../tasks/task.service.js';
 
-const getAll = () => boardsRepo.getAll();
+export const getAll = () => boardsRepo.getAll();
 
-const getBoardById = (id) => boardsRepo.getBoardById(id);
+export const get = (id) => boardsRepo.get(id);
 
-const createBoard = ({ body }) => boardsRepo.createBoard(body);
+export const save = ({ body }) => boardsRepo.save(body);
 
-const updateBoardById = ({ body, params }) => boardsRepo.updateBoardById({ id: params.id, ...body });
+export const update = ({ body, params }) => boardsRepo.update({ id: params.id, ...body });
 
-const deleteBoardById = async (id) => {
-  await boardsRepo.deleteBoardById(id)
-  await deleteManyById(id);
+export const remove = async (id) => {
+  await boardsRepo.remove(id);
+  await removeAllById(id);
 };
 
-export {
-  getAll,
-  createBoard,
-  getBoardById,
-  deleteBoardById,
-  updateBoardById,
-};

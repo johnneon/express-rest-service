@@ -1,23 +1,23 @@
 import { unsubscribe } from '../tasks/task.service.js';
-import usersRepo from './user.memory.repository.js';
+import * as userRepo from './user.memory.repository.js';
 
-const getAll = () => usersRepo.getAll();
+const getAll = () => userRepo.getAll();
 
-const getUserById = (id) => usersRepo.getUserById(id);
+const get = (id) => userRepo.get(id);
 
-const createUser = ({ body }) => usersRepo.createUser(body);
+const save = ({ body }) => userRepo.save(body);
 
-const updateUserById = ({ body, params }) => usersRepo.updateUserById({ id: params.id, ...body });
+const update = ({ body, params }) => userRepo.update({ id: params.id, ...body });
 
-const deleteUserById = async (id) => {
-  await usersRepo.deleteUserById(id);
+const remove = async (id) => {
+  await userRepo.remove(id);
   await unsubscribe(id);
 };
 
 export {
   getAll,
-  createUser,
-  getUserById,
-  deleteUserById,
-  updateUserById,
+  get,
+  save,
+  update,
+  remove,
 };

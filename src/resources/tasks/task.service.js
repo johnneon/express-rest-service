@@ -1,26 +1,16 @@
-import tasksRepo from './task.memory.repository.js';
+import * as tasksRepo from './task.memory.repository.js';
 
-const getAll = (id) => tasksRepo.getAll(id);
+export const getAll = (id) => tasksRepo.getAll(id);
 
-const getTaskById = ({ params }) => tasksRepo.getTaskById(params.id);
+export const get = ({ params }) => tasksRepo.get(params.id);
 
-const createTask = ({ body, boardId }) => tasksRepo.createTask({ ...body, boardId});
+export const save = ({ body, boardId }) => tasksRepo.save({ ...body, boardId});
 
-const updateTaskById = ({ body, params, boardId }) => 
-  tasksRepo.updateTaskById({ ...body, id: params.id, boardId });
+export const update = ({ body, params, boardId }) => 
+  tasksRepo.update({ ...body, id: params.id, boardId });
 
-const deleteTaskById = ({ params }) => tasksRepo.deleteTaskById(params.id);
+export const remove = ({ params }) => tasksRepo.remove(params.id);
 
-const deleteManyById = (boardId) => tasksRepo.deleteManyById(boardId);
+export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
 
-const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);
-
-export {
-  getAll,
-  createTask,
-  getTaskById,
-  deleteTaskById,
-  updateTaskById,
-  deleteManyById,
-  unsubscribe
-};
+export const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);

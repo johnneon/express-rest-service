@@ -1,18 +1,18 @@
 import { Board } from "./board.model.js";
 
-const getAll = async () => {
+export const getAll = async () => {
   const boards = Board.getAll();
 
   return boards;
 };
 
-const getBoardById = async (id) => {
+export const get = async (id) => {
   const board = Board.getBoardById(id);
 
   return board;
 };
 
-const createBoard = ({ title, columns }) => {
+export const save = ({ title, columns }) => {
   try {
     const board = new Board({ title, columns });
 
@@ -24,7 +24,7 @@ const createBoard = ({ title, columns }) => {
   }
 };
 
-const updateBoardById = async (body) => {
+export const update = async (body) => {
   try {
     await Board.delete(body.id);
     const board = new Board(body);
@@ -37,14 +37,6 @@ const updateBoardById = async (body) => {
   }
 };
 
-const deleteBoardById = async (id) => {
+export const remove = async (id) => {
   await Board.delete(id);
-};
-
-export default {
-  getAll,
-  createBoard,
-  getBoardById,
-  deleteBoardById,
-  updateBoardById,
 };

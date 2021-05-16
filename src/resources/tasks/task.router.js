@@ -3,16 +3,16 @@ import { OK, CREATED, NO_CONTENT, NOT_FOUND } from 'http-status-codes';
 import { Task } from './task.model.js';
 import {
   getAll,
-  createTask,
-  getTaskById,
-  deleteTaskById,
-  updateTaskById,
+  save,
+  get,
+  remove,
+  update,
 } from './task.service.js';
 
 const taskRouter = Router();
 
 taskRouter.post('/', async (req, res) => {
-  const task = await createTask(req);
+  const task = await save(req);
   res.status(CREATED).json(Task.toResponse(task));
 });
 
@@ -22,7 +22,7 @@ taskRouter.get('/', async (req, res) => {
 });
 
 taskRouter.get('/:id', async (req, res) => {
-  const task = await getTaskById(req);
+  const task = await get(req);
   if (!task) {
     res.sendStatus(NOT_FOUND);
   }
@@ -30,12 +30,12 @@ taskRouter.get('/:id', async (req, res) => {
 });
 
 taskRouter.put('/:id', async (req, res) => {
-  const task = await updateTaskById(req);
+  const task = await update(req);
   res.json(Task.toResponse(task));
 });
 
 taskRouter.delete('/:id', async (req, res) => {
-  await deleteTaskById(req);
+  await remove(req);
   res.sendStatus(NO_CONTENT);
 });
 

@@ -24,10 +24,6 @@ export class Database {
   deleteById(id, name) {
     const entityIndex = this[name].findIndex(entity => entity.id === id);
 
-    // if (entityIndex === -1) {
-    //   throw new Error();
-    // }
-    
     this[name].splice(entityIndex, 1);
   }
 

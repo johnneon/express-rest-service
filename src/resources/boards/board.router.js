@@ -3,16 +3,16 @@ import { OK, CREATED, NO_CONTENT, NOT_FOUND } from 'http-status-codes';
 import { Board } from './board.model.js';
 import {
   getAll,
-  createBoard,
-  getBoardById,
-  deleteBoardById,
-  updateBoardById,
+  save,
+  get,
+  remove,
+  update,
 } from './board.service.js';
 
 const boardRouter = Router();
 
 boardRouter.post('/', async (req, res) => {
-  const board = await createBoard(req);
+  const board = await save(req);
   res.status(CREATED).json(Board.toResponse(board));
 });
 
@@ -22,7 +22,7 @@ boardRouter.get('/', async (req, res) => {
 });
 
 boardRouter.get('/:id', async (req, res) => {
-  const board = await getBoardById(req.params.id);
+  const board = await get(req.params.id);
   if (!board) {
     res.sendStatus(NOT_FOUND);
   }
@@ -30,12 +30,12 @@ boardRouter.get('/:id', async (req, res) => {
 });
 
 boardRouter.put('/:id', async (req, res) => {
-  const board = await updateBoardById(req);
+  const board = await update(req);
   res.json(Board.toResponse(board));
 });
 
 boardRouter.delete('/:id', async (req, res) => {
-  await deleteBoardById(req.params.id);
+  await remove(req.params.id);
   res.sendStatus(NO_CONTENT);
 });
 

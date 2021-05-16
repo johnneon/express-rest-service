@@ -1,18 +1,18 @@
 import { User } from "./user.model.js";
 
-const getAll = async () => {
+export const getAll = async () => {
   const users = User.getAll();
 
   return users;
 };
 
-const getUserById = async (id) => {
+export const get = async (id) => {
   const user = User.getUserById(id);
 
   return user;
 };
 
-const createUser = ({ login, name, password }) => {
+export const save = ({ login, name, password }) => {
   try {
     const user = new User({login, name, password});
 
@@ -24,7 +24,7 @@ const createUser = ({ login, name, password }) => {
   }
 };
 
-const updateUserById = async (body) => {
+export const update = async (body) => {
   try {
     await User.delete(body.id);
     const user = new User(body);
@@ -37,14 +37,6 @@ const updateUserById = async (body) => {
   }
 };
 
-const deleteUserById = async (id) => {
+export const remove = async (id) => {
   await User.delete(id);
-};
-
-export default {
-  getAll,
-  createUser,
-  getUserById,
-  deleteUserById,
-  updateUserById,
 };
