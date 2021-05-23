@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { Database } from '../../db/db.js';
-import { CONSTANTS } from '../../constants.js';
+import { CONSTANTS } from '../../common/constants.js';
 import { Schema } from '../../models/Schema.js';
 
 const { USERS } = CONSTANTS;
