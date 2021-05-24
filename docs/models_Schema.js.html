@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: models/Schema.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,34 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: models/Schema.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Abstract class for db models
+ */
+export class Schema {
+  /**
+   * Makes model responseble
+   * @param {Object} object Entity 
+   * @returns {Object} - Responseble object
+   */
+  static toResponse(object) {
+    const model = { ...object };
+    if (model.password) {
+      model.password = undefined;
+    }
+    return model;
+  }
+}</code></pre>
+        </article>
+    </section>
 
 
 
