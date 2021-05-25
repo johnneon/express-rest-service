@@ -85,7 +85,7 @@ export class User extends Schema {
 
   /**
    * Get all users
-   * @returns {Array<IUser>} - Returns users array
+   * @returns {IUser[]} - Returns users array
    */
   static getAll() {
     const users = new Database().getAll(USERS);

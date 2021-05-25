@@ -14,22 +14,22 @@ export class Database {
     Database.exists = true;
 
     /**
-     * @property {Array<Object>} - Users data base
+     * @property {Object[]} - Users data base
      */
     this.users = [];
 
     /**
-     * @property {Array<Object>} - Boards data base
+     * @property {Object[]} - Boards data base
      */
     this.boards = [];
 
     /**
-     * @property {Array<Object>} - Columns data base
+     * @property {Object[]} - Columns data base
      */
     this.columns = [];
 
     /**
-     * @property {Array<Object>} - Tasks data base
+     * @property {Object[]} - Tasks data base
      */
     this.tasks = [];
   }
@@ -70,7 +70,7 @@ export class Database {
    * Get many by selector
    * @param {{ selector: string, value: string }} data - Object with couple selector and value to get
    * @param {string} name - Name of place to save
-   * @returns {Array<Object>} - Returns array of data
+   * @returns {Object[]} - Returns array of data
    */
   getAllBySelector({selector, value}, name) {
     return this[name].filter(entity => entity[selector] === value);
@@ -90,7 +90,7 @@ export class Database {
   /**
    * Get all entitys by db name
    * @param {string} name - Name of place to save
-   * @returns {Array<Object>} - Returns array of data
+   * @returns {Object[]} - Returns array of data
    */
   getAll(name) {
     return this[name] || [];

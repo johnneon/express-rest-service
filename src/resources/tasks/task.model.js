@@ -117,7 +117,7 @@ export class Task extends Schema {
 
   /**
    * Get all tasks
-   * @returns {Array<IUser>} - Returns tasks array
+   * @returns {IUser[]} - Returns tasks array
    */
   static getAll(id, selector) {
     const tasks = new Database().getAllBySelector({ selector: selector || 'boardId', value: id }, TASKS);

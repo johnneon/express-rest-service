@@ -9,6 +9,7 @@ import userRouter from './resources/users/user.router.js';
 import boardRouter from './resources/boards/board.router.js';
 import taskRouter from './resources/tasks/task.router.js';
 import { transferBoardId } from './utils/transferBoardId.js';
+import { greetings } from './utils/greetings.js';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -20,13 +21,7 @@ app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-app.use('/', (req, res, next) => {
-  if (req.originalUrl === '/') {
-    res.send('Service is running!');
-    return;
-  }
-  next();
-});
+app.use('/', greetings);
 
 app.use('/users', userRouter);
 

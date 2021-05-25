@@ -1,6 +1,17 @@
 import { Board } from "./board.model.js";
 
-export const getAll = async () => {
+/**
+ * Board repository module
+ * @module Board repository
+ */
+
+/**
+ * Function that get all boards from data base
+ * @async
+ * @function
+ * @returns {IBoard[]} - Returns all boards from data base
+ */
+const getAll = async () => {
   try {
     const boards = Board.getAll();
   
@@ -10,7 +21,14 @@ export const getAll = async () => {
   }
 };
 
-export const get = async (id) => {
+/**
+ * Get board by id
+ * @async
+ * @function
+ * @param {string|number} id - Board id
+ * @returns {IBoard} Returns the searched board from data base
+ */
+const get = async (id) => {
   try {
     const board = Board.getBoardById(id);
   
@@ -20,7 +38,14 @@ export const get = async (id) => {
   }
 };
 
-export const save = ({ title, columns }) => {
+/**
+ * Save board to data base
+ * @async
+ * @function
+ * @param {IBoard} board - Board data to register 
+ * @returns {IBoard} - Returns the saved board from data base
+ */
+const save = ({ title, columns }) => {
   try {
     const board = new Board({ title, columns });
 
@@ -32,7 +57,14 @@ export const save = ({ title, columns }) => {
   }
 };
 
-export const update = async (body) => {
+/**
+ * Update board in data base
+ * @async
+ * @function
+ * @param {IBoard} body - Board data
+ * @returns {IBoard} - Returns the updated board from data base
+ */
+const update = async (body) => {
   try {
     await Board.delete(body.id);
     const board = new Board(body);
@@ -45,10 +77,25 @@ export const update = async (body) => {
   }
 };
 
-export const remove = async (id) => {
+/**
+ * Remove board from data base
+ * @async
+ * @function
+ * @param {string|number} id - Board data
+ * @returns {void}
+ */
+const remove = async (id) => {
   try {
     return await Board.delete(id);
   } catch (error) {
     return error;
   }
+};
+
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
 };

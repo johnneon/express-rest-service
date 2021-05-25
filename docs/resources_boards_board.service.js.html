@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resources/tasks/task.service.js</title>
+    <title>JSDoc: Source: resources/boards/board.service.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resources/tasks/task.service.js</h1>
+    <h1 class="page-title">Source: resources/boards/board.service.js</h1>
 
     
 
@@ -26,72 +26,57 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import * as tasksRepo from './task.memory.repository.js';
+            <pre class="prettyprint source linenums"><code>import * as boardsRepo from './board.memory.repository.js';
+import { removeAllById } from '../tasks/task.service.js';
 
 /**
- * User repository module
- * @module Task service
+ * Board repository module
+ * @module Board service
  */
 
 /**
- * Function that get all users
+ * Function that get all boards
  * @function
- * @param {string|number} id - Task id
- * @returns {ITask[]} - Returns all tasks
+ * @returns {IBoard[]} - Returns all boards
  */
-export const getAll = (id) => tasksRepo.getAll(id);
+export const getAll = () => boardsRepo.getAll();
 
 /**
- * Get user by id
+ * Get board by id
  * @function
- * @param {Request} req - Express request object
- * @returns {ITask} Returns the searched task
+ * @param {string|number} id - Board id
+ * @returns {IBoard} Returns the searched board
  */
-export const get = ({ params }) => tasksRepo.get(params.id);
+export const get = (id) => boardsRepo.get(id);
 
 /**
- * Save user
+ * Save board
  * @function
- * @param {Request} req - Express request object 
- * @returns {ITask} - Returns the saved task
+ * @param {IBoard} board - Board data to register 
+ * @returns {IBoard} - Returns the saved board
  */
-export const save = ({ body, boardId }) => tasksRepo.save({ ...body, boardId});
+export const save = ({ body }) => boardsRepo.save(body);
 
 /**
- * Update user in data base
+ * Update board in data base
  * @function
- * @param {Request} req - Express request object
- * @returns {ITask} - Returns the updated task
+ * @param {IBoard} body - Board data
+ * @returns {IBoard} - Returns the updated board
  */
-export const update = ({ body, params, boardId }) => 
-  tasksRepo.update({ ...body, id: params.id, boardId });
+export const update = ({ body, params }) => boardsRepo.update({ id: params.id, ...body });
 
-  /**
- * Remove user
+/**
+ * Remove board and with all columns and tasks
  * @async
  * @function
- * @param {Request} req - Express request object 
+ * @param {string|number} id - Board data
  * @returns {void}
  */
-export const remove = ({ params }) => tasksRepo.remove(params.id);
+export const remove = async (id) => {
+  await boardsRepo.remove(id);
+  await removeAllById(id);
+};
 
-/**
- * Remove many task from data base
- * @async
- * @function
- * @param {string|number} boardId - Board id
- * @returns {void}
- */
-export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
-
-/**
- * Unsubscribes users from tasks
- * @async
- * @function
- * @param {string|number} userId - User id
- * @returns {ITask[]}
- */
-export const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);
 </code></pre>
         </article>
     </section>

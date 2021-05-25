@@ -9,7 +9,7 @@ import { Task } from "./task.model.js";
  * Function that get all tasks from data base
  * @async
  * @function
- * @returns {Array<ITask>} - Returns all tasks from data base
+ * @returns {ITask[]} - Returns all tasks from data base
  */
 const getAll = async (boardId) => {
   const tasks =  await Task.getAll(boardId);
@@ -108,7 +108,7 @@ const removeAllById = async (boardId) => {
  * @async
  * @function
  * @param {string|number} userId - User id
- * @returns {Array<ITask>}
+ * @returns {ITask[]}
  */
 const unsubscribe = async (userId) => {
   try {

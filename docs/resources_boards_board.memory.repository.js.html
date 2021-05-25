@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resources/tasks/task.service.js</title>
+    <title>JSDoc: Source: resources/boards/board.memory.repository.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resources/tasks/task.service.js</h1>
+    <h1 class="page-title">Source: resources/boards/board.memory.repository.js</h1>
 
     
 
@@ -26,73 +26,107 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import * as tasksRepo from './task.memory.repository.js';
+            <pre class="prettyprint source linenums"><code>import { Board } from "./board.model.js";
 
 /**
- * User repository module
- * @module Task service
+ * Board repository module
+ * @module Board repository
  */
 
 /**
- * Function that get all users
- * @function
- * @param {string|number} id - Task id
- * @returns {ITask[]} - Returns all tasks
- */
-export const getAll = (id) => tasksRepo.getAll(id);
-
-/**
- * Get user by id
- * @function
- * @param {Request} req - Express request object
- * @returns {ITask} Returns the searched task
- */
-export const get = ({ params }) => tasksRepo.get(params.id);
-
-/**
- * Save user
- * @function
- * @param {Request} req - Express request object 
- * @returns {ITask} - Returns the saved task
- */
-export const save = ({ body, boardId }) => tasksRepo.save({ ...body, boardId});
-
-/**
- * Update user in data base
- * @function
- * @param {Request} req - Express request object
- * @returns {ITask} - Returns the updated task
- */
-export const update = ({ body, params, boardId }) => 
-  tasksRepo.update({ ...body, id: params.id, boardId });
-
-  /**
- * Remove user
+ * Function that get all boards from data base
  * @async
  * @function
- * @param {Request} req - Express request object 
+ * @returns {IBoard[]} - Returns all boards from data base
+ */
+const getAll = async () => {
+  try {
+    const boards = Board.getAll();
+  
+    return boards;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * Get board by id
+ * @async
+ * @function
+ * @param {string|number} id - Board id
+ * @returns {IBoard} Returns the searched board from data base
+ */
+const get = async (id) => {
+  try {
+    const board = Board.getBoardById(id);
+  
+    return board;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * Save board to data base
+ * @async
+ * @function
+ * @param {IBoard} board - Board data to register 
+ * @returns {IBoard} - Returns the saved board from data base
+ */
+const save = ({ title, columns }) => {
+  try {
+    const board = new Board({ title, columns });
+
+    board.save();
+
+    return board;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * Update board in data base
+ * @async
+ * @function
+ * @param {IBoard} body - Board data
+ * @returns {IBoard} - Returns the updated board from data base
+ */
+const update = async (body) => {
+  try {
+    await Board.delete(body.id);
+    const board = new Board(body);
+
+    board.save();
+
+    return board;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * Remove board from data base
+ * @async
+ * @function
+ * @param {string|number} id - Board data
  * @returns {void}
  */
-export const remove = ({ params }) => tasksRepo.remove(params.id);
+const remove = async (id) => {
+  try {
+    return await Board.delete(id);
+  } catch (error) {
+    return error;
+  }
+};
 
-/**
- * Remove many task from data base
- * @async
- * @function
- * @param {string|number} boardId - Board id
- * @returns {void}
- */
-export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
-
-/**
- * Unsubscribes users from tasks
- * @async
- * @function
- * @param {string|number} userId - User id
- * @returns {ITask[]}
- */
-export const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);
-</code></pre>
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
+};</code></pre>
         </article>
     </section>
 

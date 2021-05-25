@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resources/tasks/task.model.js</title>
+    <title>JSDoc: Source: resources/boards/board.model.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resources/tasks/task.model.js</h1>
+    <h1 class="page-title">Source: resources/boards/board.model.js</h1>
 
     
 
@@ -31,125 +31,113 @@ import { Database } from '../../db/db.js';
 import { CONSTANTS } from '../../common/constants.js';
 import { Schema } from '../../models/Schema.js';
 
+const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
+
 /**
-* Task model
-* @typedef {Object} ITask
-* @property {string|number} id - Task id
-* @property {string} title - Task title
-* @property {number} order - Task order
-* @property {string} description - Task description
-* @property {string|number} taskId - Task id
-* @property {string|number} boardId - Board id
-* @property {string|number} columnId - Column id
+* Column model
+* @typedef {Object} IColumn
+* @property {string|number} [id] - Column ID
+* @property {string} title - Column title
+* @property {number} order - Column order (optional)
 */
 
-const { TASKS } = CONSTANTS;
+/**
+* Board model
+* @typedef {Object} IBoard
+* @property {string|number} [id] - Board ID
+* @property {string} title - Board title
+* @property {IColumn[]} columns - Board columns
+*/
 
 /**
- * Task model
+ * Board model
  */
-export class Task extends Schema {
+export class Board extends Schema {
   /**
-  * @param {ITask} task - Task data from request
+  * @param {IBoard} board - Board data from request
   */
   constructor({
     id = uuid(),
-    title = 'TASK',
-    order = 0,
-    description = 'Some desc',
-    userId = '',
-    boardId = '',
-    columnId = '',
+    title = 'BOARD',
+    columns = [],
   } = {}) {
     super();
 
     /**
-     * @property {string|number} id - Task ID
+     * @property {string|number} id - Board ID
      */
     this.id = id;
 
     /**
-     * @property {string} title - Task title
+     * @property {string} title - Board title
      */
     this.title = title;
 
     /**
-     * @property {number} order - Task order in column
+     * @property {IColumn[]} columns - Board columns
      */
-    this.order = order;
-
-    /**
-     * @property {string} description - Task description
-     */
-    this.description = description;
-
-    /**
-     * @property {string|number} userId - User ID
-     */
-    this.userId = userId;
-
-    /**
-     * @property {string|number} boardId - Board ID
-     */
-    this.boardId = boardId;
-
-    /**
-     * @property {string|number} columnId - Column ID
-     */
-    this.columnId = columnId;
+    this.columns = columns;
   }
 
   /**
-   * Save task to data base
+   * Save board to data base
    * @property {Function} save
    * @returns {void}
    */
   save() {
     const db = new Database();
 
-    db.save(this, TASKS);
+    if (this.columns?.length > 0) {
+      this.columns = this.columns.map((col) => {
+        if (!col?.id) {
+          const columnWithId = { ...col, id: uuid() };
+          return columnWithId;
+        }
+        return col;
+      });
+    }
+
+    db.save(this, BOARDS);
   }
 
   /**
-   * Delete many task by id
-   * @param {string|number} id - Sekector id
-   * @returns {void}
-   */
-  static deleteManyById(id) {
-    const db = new Database();
-
-    db.deleteManyBySelector({ selector: 'boardId', value: id }, TASKS);
-  }
-
-  /**
-   * Delete task by id
-   * @param {string|number} id - Task id
+   * Delete board by id
+   * @param {string|number} id - User id
    * @returns {void}
    */
   static delete(id) {
     const db = new Database();
 
-    db.deleteById(id, TASKS);
+    db.deleteById(id, BOARDS);
+    db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
+  }
+
+  static findByIdAndUpdate(body) {
+    const db = new Database();
+    const board = db.findByIdAndUpdate(body, BOARDS);
+
+    return board;
   }
 
   /**
-   * Get task by id
-   * @param {string|number} id - Task id
-   * @returns {Object} - Returns task object
+   * Get board by id
+   * @param {string|number} id - Board id
+   * @returns {Object} - Returns board data
    */
-  static getTaskById(id) {
+  static getBoardById(id) {
     const db = new Database();
 
-    return db.getById(id, TASKS);
+    return db.getById(id, BOARDS);
   }
 
   /**
-   * Get all tasks
-   * @returns {IUser[]} - Returns tasks array
+   * Get all boards
+   * @returns {IUser[]} - Returns boards array
    */
-  static getAll(id, selector) {
-    const tasks = new Database().getAllBySelector({ selector: selector || 'boardId', value: id }, TASKS);
-    return tasks;
+  static getAll() {
+    const boards = new Database().getAll(BOARDS);
+
+    return boards;
   }
 }
 

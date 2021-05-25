@@ -9,7 +9,7 @@ import { User } from "./user.model.js";
  * Function that get all users from data base
  * @async
  * @function
- * @returns {Array<IUser>} - Returns all users from data base
+ * @returns {IUser[]} - Returns all users from data base
  */
 const getAll = async () => {
   const users = User.getAll();

@@ -10,7 +10,7 @@ import * as userRepo from './user.memory.repository.js';
 /**
  * Function that get all users
  * @function
- * @returns {Array<IUser>} - Returns all users
+ * @returns {IUser[]} - Returns all users
  */
 const getAll = () => userRepo.getAll();
 

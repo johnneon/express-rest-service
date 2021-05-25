@@ -9,7 +9,7 @@ import * as tasksRepo from './task.memory.repository.js';
  * Function that get all users
  * @function
  * @param {string|number} id - Task id
- * @returns {Array<ITask>} - Returns all tasks
+ * @returns {ITask[]} - Returns all tasks
  */
 export const getAll = (id) => tasksRepo.getAll(id);
 
@@ -61,6 +61,6 @@ export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
  * @async
  * @function
  * @param {string|number} userId - User id
- * @returns {Array<ITask>}
+ * @returns {ITask[]}
  */
 export const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);
