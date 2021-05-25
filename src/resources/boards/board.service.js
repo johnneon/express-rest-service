@@ -42,7 +42,7 @@ export const update = ({ body, params }) => boardsRepo.update({ id: params.id, .
  * @async
  * @function
  * @param {string|number} id - Board data
- * @returns {void}
+ * @returns {Promise<void>}
  */
 export const remove = async (id) => {
   await boardsRepo.remove(id);

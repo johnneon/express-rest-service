@@ -10,7 +10,7 @@ import { Schema } from '../../models/Schema.js';
 * @property {string} title - Task title
 * @property {number} order - Task order
 * @property {string} description - Task description
-* @property {string|number} taskId - Task id
+* @property {string|number|null} userId - User id
 * @property {string|number} boardId - Board id
 * @property {string|number} columnId - Column id
 */
@@ -56,7 +56,7 @@ export class Task extends Schema {
     this.description = description;
 
     /**
-     * @property {string|number} userId - User ID
+     * @property {string|number|null} userId - User ID
      */
     this.userId = userId;
 
@@ -73,10 +73,11 @@ export class Task extends Schema {
 
   /**
    * Save task to data base
+   * @async
    * @property {Function} save
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  save() {
+  async save() {
     const db = new Database();
 
     db.save(this, TASKS);
@@ -84,10 +85,11 @@ export class Task extends Schema {
 
   /**
    * Delete many task by id
+   * @async
    * @param {string|number} id - Sekector id
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static deleteManyById(id) {
+  static async deleteManyById(id) {
     const db = new Database();
 
     db.deleteManyBySelector({ selector: 'boardId', value: id }, TASKS);
@@ -95,10 +97,11 @@ export class Task extends Schema {
 
   /**
    * Delete task by id
+   * @async
    * @param {string|number} id - Task id
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static delete(id) {
+  static async delete(id) {
     const db = new Database();
 
     db.deleteById(id, TASKS);
@@ -106,10 +109,11 @@ export class Task extends Schema {
 
   /**
    * Get task by id
+   * @async
    * @param {string|number} id - Task id
-   * @returns {Object} - Returns task object
+   * @returns {Promise<ITask>} - Returns task object
    */
-  static getTaskById(id) {
+  static async getTaskById(id) {
     const db = new Database();
 
     return db.getById(id, TASKS);
@@ -117,9 +121,10 @@ export class Task extends Schema {
 
   /**
    * Get all tasks
-   * @returns {IUser[]} - Returns tasks array
+   * @async
+   * @returns {Promise<IUser[]>} - Returns tasks array
    */
-  static getAll(id, selector) {
+  static async getAll(id, selector) {
     const tasks = new Database().getAllBySelector({ selector: selector || 'boardId', value: id }, TASKS);
     return tasks;
   }

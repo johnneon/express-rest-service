@@ -43,7 +43,7 @@ const update = ({ body, params }) => userRepo.update({ id: params.id, ...body })
  * @async
  * @function
  * @param {string|number} id - User data
- * @returns {void}
+ * @returns {Promise<void>}
  */
 const remove = async (id) => {
   await userRepo.remove(id);

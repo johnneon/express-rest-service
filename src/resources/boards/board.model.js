@@ -53,10 +53,11 @@ export class Board extends Schema {
 
   /**
    * Save board to data base
+   * @async
    * @property {Function} save
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  save() {
+  async save() {
     const db = new Database();
 
     if (this.columns?.length > 0) {
@@ -69,45 +70,48 @@ export class Board extends Schema {
       });
     }
 
-    db.save(this, BOARDS);
+    await db.save(this, BOARDS);
   }
 
   /**
-   * Delete board by id
+   * Delete board by id and tasks
+   * @async
    * @param {string|number} id - User id
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static delete(id) {
+  static async delete(id) {
     const db = new Database();
 
-    db.deleteById(id, BOARDS);
-    db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
+    await db.deleteById(id, BOARDS);
+    await db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
   }
 
-  static findByIdAndUpdate(body) {
+  static async findByIdAndUpdate(body) {
     const db = new Database();
-    const board = db.findByIdAndUpdate(body, BOARDS);
+    const board = await db.findByIdAndUpdate(body, BOARDS);
 
     return board;
   }
 
   /**
    * Get board by id
+   * @async
    * @param {string|number} id - Board id
-   * @returns {Object} - Returns board data
+   * @returns {Promise<IBoard>} - Returns board data
    */
-  static getBoardById(id) {
+  static async getBoardById(id) {
     const db = new Database();
-
-    return db.getById(id, BOARDS);
+    const board = await db.getById(id, BOARDS);
+    return board;
   }
 
   /**
    * Get all boards
-   * @returns {IUser[]} - Returns boards array
+   * @async
+   * @returns {Promise<IBoard[]>} - Returns boards array
    */
-  static getAll() {
-    const boards = new Database().getAll(BOARDS);
+  static async getAll() {
+    const boards = await new Database().getAll(BOARDS);
 
     return boards;
   }

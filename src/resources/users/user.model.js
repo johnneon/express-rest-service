@@ -52,43 +52,47 @@ export class User extends Schema {
 
   /**
    * Save user to data base
+   * @async
    * @property {Function} save
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  save() {
+  async save() {
     const db = new Database();
 
-    db.save(this, USERS);
+    await db.save(this, USERS);
   }
 
   /**
    * Delete user by id
+   * @async
    * @param {string|number} id - User id
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static delete(id) {
+  static async delete(id) {
     const db = new Database();
 
-    db.deleteById(id, USERS);
+    await db.deleteById(id, USERS);
   }
 
   /**
    * Get user by id
+   * @async
    * @param {string|number} id - User id
-   * @returns {Object} - Returns data object
+   * @returns {Promise<IUser>} - Returns data object
    */
-  static getUserById(id) {
-    const db = new Database();
+  static async getUserById(id) {
+    const db = await new Database();
 
     return db.getById(id, USERS);
   }
 
   /**
    * Get all users
+   * @async
    * @returns {IUser[]} - Returns users array
    */
-  static getAll() {
-    const users = new Database().getAll(USERS);
+  static async getAll() {
+    const users = await new Database().getAll(USERS);
 
     return users;
   }

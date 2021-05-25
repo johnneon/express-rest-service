@@ -9,7 +9,7 @@ import { Board } from "./board.model.js";
  * Function that get all boards from data base
  * @async
  * @function
- * @returns {IBoard[]} - Returns all boards from data base
+ * @returns {Promise<IBoard[]>} - Returns all boards from data base
  */
 const getAll = async () => {
   try {
@@ -26,11 +26,11 @@ const getAll = async () => {
  * @async
  * @function
  * @param {string|number} id - Board id
- * @returns {IBoard} Returns the searched board from data base
+ * @returns {Promise<IBoard>} Returns the searched board from data base
  */
 const get = async (id) => {
   try {
-    const board = Board.getBoardById(id);
+    const board = await Board.getBoardById(id);
   
     return board;
   } catch (error) {
@@ -43,13 +43,13 @@ const get = async (id) => {
  * @async
  * @function
  * @param {IBoard} board - Board data to register 
- * @returns {IBoard} - Returns the saved board from data base
+ * @returns {Promise<IBoard>} - Returns the saved board from data base
  */
-const save = ({ title, columns }) => {
+const save = async ({ title, columns }) => {
   try {
     const board = new Board({ title, columns });
 
-    board.save();
+    await board.save();
 
     return board;
   } catch (error) {
@@ -62,14 +62,14 @@ const save = ({ title, columns }) => {
  * @async
  * @function
  * @param {IBoard} body - Board data
- * @returns {IBoard} - Returns the updated board from data base
+ * @returns {Promise<IBoard>} - Returns the updated board from data base
  */
 const update = async (body) => {
   try {
     await Board.delete(body.id);
     const board = new Board(body);
 
-    board.save();
+    await board.save();
 
     return board;
   } catch (error) {
@@ -82,7 +82,7 @@ const update = async (body) => {
  * @async
  * @function
  * @param {string|number} id - Board data
- * @returns {void}
+ * @returns {Promise<void>}
  */
 const remove = async (id) => {
   try {

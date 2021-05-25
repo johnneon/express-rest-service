@@ -40,7 +40,6 @@ export const update = ({ body, params, boardId }) =>
 
   /**
  * Remove user
- * @async
  * @function
  * @param {Request} req - Express request object 
  * @returns {void}
@@ -49,7 +48,6 @@ export const remove = ({ params }) => tasksRepo.remove(params.id);
 
 /**
  * Remove many task from data base
- * @async
  * @function
  * @param {string|number} boardId - Board id
  * @returns {void}
@@ -58,7 +56,6 @@ export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
 
 /**
  * Unsubscribes users from tasks
- * @async
  * @function
  * @param {string|number} userId - User id
  * @returns {ITask[]}

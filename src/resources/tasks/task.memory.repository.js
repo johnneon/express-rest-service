@@ -9,7 +9,7 @@ import { Task } from "./task.model.js";
  * Function that get all tasks from data base
  * @async
  * @function
- * @returns {ITask[]} - Returns all tasks from data base
+ * @returns {Promise<ITask[]>} - Returns all tasks from data base
  */
 const getAll = async (boardId) => {
   const tasks =  await Task.getAll(boardId);
@@ -22,7 +22,7 @@ const getAll = async (boardId) => {
  * @async
  * @function
  * @param {string|number} id - Task id
- * @returns {ITask} Returns the searched task from data base
+ * @returns {Promise<ITask>} Returns the searched task from data base
  */
 const get = async (id) => {
   try {
@@ -39,7 +39,7 @@ const get = async (id) => {
  * @async
  * @function
  * @param {ITask} task - Task data to register 
- * @returns {ITask} - Returns the saved task from data base
+ * @returns {Promise<ITask>} - Returns the saved task from data base
  */
 const save = async (body) => {
   try {
@@ -58,7 +58,7 @@ const save = async (body) => {
  * @async
  * @function
  * @param {ITask} body - Task data
- * @returns {ITask} - Returns the updated task from data base
+ * @returns {Promise<ITask>} - Returns the updated task from data base
  */
 const update = async (body) => {
   try {
@@ -78,7 +78,7 @@ const update = async (body) => {
  * @async
  * @function
  * @param {string|number} id - Task data
- * @returns {void}
+ * @returns {Promise<void>}
  */
 const remove = async (id) => {
   try {
@@ -93,7 +93,7 @@ const remove = async (id) => {
  * @async
  * @function
  * @param {string|number} boardId - Board id
- * @returns {void}
+ * @returns {Promise<void>}
  */
 const removeAllById = async (boardId) => {
   try {
@@ -108,7 +108,7 @@ const removeAllById = async (boardId) => {
  * @async
  * @function
  * @param {string|number} userId - User id
- * @returns {ITask[]}
+ * @returns {Promise<ITask[]>}
  */
 const unsubscribe = async (userId) => {
   try {

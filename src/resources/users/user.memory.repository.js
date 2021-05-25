@@ -9,10 +9,10 @@ import { User } from "./user.model.js";
  * Function that get all users from data base
  * @async
  * @function
- * @returns {IUser[]} - Returns all users from data base
+ * @returns {Promise<IUser[]>} - Returns all users from data base
  */
 const getAll = async () => {
-  const users = User.getAll();
+  const users = await User.getAll();
 
   return users;
 };
@@ -22,11 +22,11 @@ const getAll = async () => {
  * @async
  * @function
  * @param {string|number} id - User id
- * @returns {IUser} Returns the searched user from data base
+ * @returns {Promise<IUser>} Returns the searched user from data base
  */
 const get = async (id) => {
   try {
-    const user = User.getUserById(id);
+    const user = await User.getUserById(id);
   
     return user;
   } catch (error) {
@@ -39,13 +39,13 @@ const get = async (id) => {
  * @async
  * @function
  * @param {IUser} user - User data to register 
- * @returns {IUser} - Returns the saved user from data base
+ * @returns {Promise<IUser>} - Returns the saved user from data base
  */
-const save = ({ login, name, password }) => {
+const save = async ({ login, name, password }) => {
   try {
     const user = new User({login, name, password});
 
-    user.save();
+    await user.save();
 
     return user;
   } catch (error) {
@@ -58,14 +58,14 @@ const save = ({ login, name, password }) => {
  * @async
  * @function
  * @param {IUser} body - User data
- * @returns {IUser} - Returns the updated user from data base
+ * @returns {Promise<IUser>} - Returns the updated user from data base
  */
 const update = async (body) => {
   try {
     await User.delete(body.id);
     const user = new User(body);
 
-    user.save();
+    await user.save();
 
     return user;
   } catch (error) {
@@ -79,7 +79,7 @@ const update = async (body) => {
  * @async
  * @function
  * @param {string|number} id - User data
- * @returns {void}
+ * @returns {Promise<void>}
  */
 const remove = async (id) => {
   try {
