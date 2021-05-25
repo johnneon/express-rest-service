@@ -1,5 +1,16 @@
-import usersRepo from './task.memory.repository.js';
+import * as tasksRepo from './task.memory.repository.js';
 
-const getAll = () => usersRepo.getAll();
+export const getAll = (id) => tasksRepo.getAll(id);
 
-export { getAll };
+export const get = ({ params }) => tasksRepo.get(params.id);
+
+export const save = ({ body, boardId }) => tasksRepo.save({ ...body, boardId});
+
+export const update = ({ body, params, boardId }) => 
+  tasksRepo.update({ ...body, id: params.id, boardId });
+
+export const remove = ({ params }) => tasksRepo.remove(params.id);
+
+export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
+
+export const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);

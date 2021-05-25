@@ -1,32 +1,39 @@
 import { Router } from 'express';
+import { OK, CREATED, NO_CONTENT } from 'http-status-codes';
 import { User } from './user.model.js';
-import { getAll } from './user.service.js';
+import {
+  getAll,
+  save,
+  get,
+  update,
+  remove,
+} from './user.service.js';
 
 const userRouter = Router();
 
-userRouter.get('/', async (req, res) => {
-  const users = await getAll();
-  res.json(users.map(User.toResponse));
-});
-
-userRouter.get('/', async (req, res) => {
-  const users = await getAll();
-  res.json(users.map(User.toResponse));
-});
-
 userRouter.post('/', async (req, res) => {
-  const users = await getAll();
-  res.json(users.map(User.toResponse));
+  const user = await save(req);
+  return res.status(CREATED).json(User.toResponse(user));
 });
 
-userRouter.put('/', async (req, res) => {
+userRouter.get('/', async (req, res) => {
   const users = await getAll();
-  res.json(users.map(User.toResponse));
+  return res.status(OK).json(users.map(User.toResponse));
 });
 
-userRouter.delete('/', async (req, res) => {
-  const users = await getAll();
-  res.json(users.map(User.toResponse));
+userRouter.get('/:id', async ({ params }, res) => {
+  const user = await get(params.id);
+  return res.status(OK).json(User.toResponse(user));
+});
+
+userRouter.put('/:id', async (req, res) => {
+  const user = await update(req);
+  return res.status(OK).json(User.toResponse(user));
+});
+
+userRouter.delete('/:id', async ({ params }, res) => {
+  await remove(params.id);
+  return res.sendStatus(NO_CONTENT);
 });
 
 export default userRouter;
