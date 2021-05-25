@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resources/users/user.memory.repository.js</title>
+    <title>JSDoc: Source: resources/users/user.service.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resources/users/user.memory.repository.js</h1>
+    <h1 class="page-title">Source: resources/users/user.service.js</h1>
 
     
 
@@ -26,11 +26,12 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { User } from "./user.model.js";
+            <pre class="prettyprint source linenums"><code>import { unsubscribe } from '../tasks/task.service.js';
+import * as userRepo from './user.memory.repository.js';
 
 /**
  * User repository module
- * @module User repository
+ * @module User service
  */
 
 /**
@@ -43,96 +44,56 @@
 */
 
 /**
- * Function that get all users from data base
- * @async
+ * Function that get all users
  * @function
- * @returns {Array&lt;User>} - Returns all users from data base
+ * @returns {Array&lt;User>} - Returns all users
  */
-const getAll = async () => {
-  const users = User.getAll();
-
-  return users;
-};
+const getAll = () => userRepo.getAll();
 
 /**
  * Get user by id
- * @async
  * @function
  * @param {string|number} id - User id
- * @returns {User} Returns the searched user from data base
+ * @returns {User} Returns the searched user
  */
-const get = async (id) => {
-  try {
-    const user = User.getUserById(id);
-  
-    return user;
-  } catch (error) {
-    return error;
-  }
-};
+const get = (id) => userRepo.get(id);
 
 /**
- * Save user to data base
- * @async
+ * Save user
  * @function
  * @param {User} user - User data to register 
- * @returns {User} - Returns the saved user from data base
+ * @returns {User} - Returns the saved user
  */
-const save = ({ login, name, password }) => {
-  try {
-    const user = new User({login, name, password});
-
-    user.save();
-
-    return user;
-  } catch (error) {
-    return error;
-  }
-};
+const save = ({ body }) => userRepo.save(body);
 
 /**
  * Update user in data base
- * @async
  * @function
  * @param {User} body - User data
- * @returns {User} - Returns the updated user from data base
+ * @returns {User} - Returns the updated user
  */
-const update = async (body) => {
-  try {
-    await User.delete(body.id);
-    const user = new User(body);
-
-    user.save();
-
-    return user;
-  } catch (error) {
-    return error;
-  }
-};
-
+const update = ({ body, params }) => userRepo.update({ id: params.id, ...body });
 
 /**
- * Remove user from data base
+ * Remove user
  * @async
  * @function
  * @param {string|number} id - User data
  * @returns {void}
  */
 const remove = async (id) => {
-  try {
-    return await User.delete(id);
-  } catch (error) {
-    return error;
-  }
+  await userRepo.remove(id);
+  await unsubscribe(id);
 };
 
 export {
-  get,
   getAll,
+  get,
   save,
   update,
   remove,
-};</code></pre>
+};
+</code></pre>
         </article>
     </section>
 

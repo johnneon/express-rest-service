@@ -46,7 +46,7 @@ export class Database {
 
   /**
    * Delete entity by id
-   * @param {string} id - Id of entity in db
+   * @param {string|number} id - Id of entity in db
    * @param {string} name  - Name of place to save
    * @returns {void}
    */
@@ -78,7 +78,7 @@ export class Database {
 
   /**
    * Get entity by id
-   * @param {string} id - Id of entity in db
+   * @param {string|number} id - Id of entity in db
    * @param {string} name - Name of place to save
    * @returns {Object} - Returns data object
    */

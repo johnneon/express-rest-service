@@ -2,23 +2,25 @@ import { User } from "./user.model.js";
 
 /**
  * User repository module
- * @module User_repository
+ * @module User repository
  */
 
 /**
 * A user
 * @typedef {Object} User
-* @property {string} [id] - User ID
+* @property {string|number} [id] - User ID
 * @property {string} name - User name
-* @property {string} login - User age (optional)
+* @property {string} login - User login (optional)
 * @property {string} password - User is active
 */
 
 /**
- * Function that get all users from db
- * @returns {Array<User>}
+ * Function that get all users from data base
+ * @async
+ * @function
+ * @returns {Array<User>} - Returns all users from data base
  */
-export const getAll = async () => {
+const getAll = async () => {
   const users = User.getAll();
 
   return users;
@@ -26,10 +28,12 @@ export const getAll = async () => {
 
 /**
  * Get user by id
- * @param {string} id - User id
- * @returns {User}
+ * @async
+ * @function
+ * @param {string|number} id - User id
+ * @returns {User} Returns the searched user from data base
  */
-export const get = async (id) => {
+const get = async (id) => {
   try {
     const user = User.getUserById(id);
   
@@ -41,10 +45,12 @@ export const get = async (id) => {
 
 /**
  * Save user to data base
+ * @async
+ * @function
  * @param {User} user - User data to register 
- * @returns {User}
+ * @returns {User} - Returns the saved user from data base
  */
-export const save = ({ login, name, password }) => {
+const save = ({ login, name, password }) => {
   try {
     const user = new User({login, name, password});
 
@@ -57,11 +63,13 @@ export const save = ({ login, name, password }) => {
 };
 
 /**
- * Update user
+ * Update user in data base
+ * @async
+ * @function
  * @param {User} body - User data
- * @returns {User}
+ * @returns {User} - Returns the updated user from data base
  */
-export const update = async (body) => {
+const update = async (body) => {
   try {
     await User.delete(body.id);
     const user = new User(body);
@@ -76,14 +84,24 @@ export const update = async (body) => {
 
 
 /**
- * Remove user
- * @param {string} id - User data
+ * Remove user from data base
+ * @async
+ * @function
+ * @param {string|number} id - User data
  * @returns {void}
  */
-export const remove = async (id) => {
+const remove = async (id) => {
   try {
     return await User.delete(id);
   } catch (error) {
     return error;
   }
+};
+
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
 };
