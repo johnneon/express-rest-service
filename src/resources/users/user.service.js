@@ -6,19 +6,11 @@ import * as userRepo from './user.memory.repository.js';
  * @module User service
  */
 
-/**
-* A user
-* @typedef {Object} User
-* @property {string|number} [id] - User ID
-* @property {string} name - User name
-* @property {string} login - User login (optional)
-* @property {string} password - User is active
-*/
 
 /**
  * Function that get all users
  * @function
- * @returns {Array<User>} - Returns all users
+ * @returns {Array<IUser>} - Returns all users
  */
 const getAll = () => userRepo.getAll();
 
@@ -26,23 +18,23 @@ const getAll = () => userRepo.getAll();
  * Get user by id
  * @function
  * @param {string|number} id - User id
- * @returns {User} Returns the searched user
+ * @returns {IUser} Returns the searched user
  */
 const get = (id) => userRepo.get(id);
 
 /**
  * Save user
  * @function
- * @param {User} user - User data to register 
- * @returns {User} - Returns the saved user
+ * @param {IUser} user - User data to register 
+ * @returns {IUser} - Returns the saved user
  */
 const save = ({ body }) => userRepo.save(body);
 
 /**
  * Update user in data base
  * @function
- * @param {User} body - User data
- * @returns {User} - Returns the updated user
+ * @param {IUser} body - User data
+ * @returns {IUser} - Returns the updated user
  */
 const update = ({ body, params }) => userRepo.update({ id: params.id, ...body });
 

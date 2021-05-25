@@ -1,12 +1,30 @@
 import { Task } from "./task.model.js";
 
-export const getAll = async (boardId) => {
+/**
+ * User repository module
+ * @module Task repository
+ */
+
+/**
+ * Function that get all tasks from data base
+ * @async
+ * @function
+ * @returns {Array<ITask>} - Returns all tasks from data base
+ */
+const getAll = async (boardId) => {
   const tasks =  await Task.getAll(boardId);
 
   return tasks;
 };
 
-export const get = async (id) => {
+/**
+ * Get task by id
+ * @async
+ * @function
+ * @param {string|number} id - Task id
+ * @returns {ITask} Returns the searched task from data base
+ */
+const get = async (id) => {
   try {
     const task = await Task.getTaskById(id);
   
@@ -16,7 +34,14 @@ export const get = async (id) => {
   }
 };
 
-export const save = async (body) => {
+/**
+ * Save task to data base
+ * @async
+ * @function
+ * @param {ITask} task - Task data to register 
+ * @returns {ITask} - Returns the saved task from data base
+ */
+const save = async (body) => {
   try {
     const task = new Task(body);
 
@@ -28,7 +53,14 @@ export const save = async (body) => {
   }
 };
 
-export const update = async (body) => {
+/**
+ * Update task in data base
+ * @async
+ * @function
+ * @param {ITask} body - Task data
+ * @returns {ITask} - Returns the updated task from data base
+ */
+const update = async (body) => {
   try {
     await Task.delete(body.id);
     const task = new Task(body);
@@ -41,7 +73,14 @@ export const update = async (body) => {
   }
 };
 
-export const remove = async (id) => {
+/**
+ * Remove task from data base
+ * @async
+ * @function
+ * @param {string|number} id - Task data
+ * @returns {void}
+ */
+const remove = async (id) => {
   try {
     return await Task.delete(id);
   } catch (error) {
@@ -49,15 +88,29 @@ export const remove = async (id) => {
   }
 };
 
-export const removeAllById = async (id) => {
+/**
+ * Remove many task from data base
+ * @async
+ * @function
+ * @param {string|number} boardId - Board id
+ * @returns {void}
+ */
+const removeAllById = async (boardId) => {
   try {
-    return await Task.deleteManyById(id);
+    return await Task.deleteManyById(boardId);
   } catch (error) {
     return error;
   }
 };
 
-export const unsubscribe = async (userId) => {
+/**
+ * Unsubscribes users from tasks
+ * @async
+ * @function
+ * @param {string|number} userId - User id
+ * @returns {Array<ITask>}
+ */
+const unsubscribe = async (userId) => {
   try {
     const tasks = await Task.getAll(userId, 'userId');
     return await tasks.forEach(async task => {
@@ -67,4 +120,14 @@ export const unsubscribe = async (userId) => {
   } catch (error) {
     return error;
   }
+};
+
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
+  removeAllById,
+  unsubscribe,
 };

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resources/users/user.service.js</title>
+    <title>JSDoc: Source: utils/transferBoardId.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resources/users/user.service.js</h1>
+    <h1 class="page-title">Source: utils/transferBoardId.js</h1>
 
     
 
@@ -26,66 +26,18 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { unsubscribe } from '../tasks/task.service.js';
-import * as userRepo from './user.memory.repository.js';
-
-/**
- * User repository module
- * @module User service
- */
-
-
-/**
- * Function that get all users
+            <pre class="prettyprint source linenums"><code>/**
+ * Middleware for transport boardId
  * @function
- * @returns {Array&lt;IUser>} - Returns all users
- */
-const getAll = () => userRepo.getAll();
-
-/**
- * Get user by id
- * @function
- * @param {string|number} id - User id
- * @returns {IUser} Returns the searched user
- */
-const get = (id) => userRepo.get(id);
-
-/**
- * Save user
- * @function
- * @param {IUser} user - User data to register 
- * @returns {IUser} - Returns the saved user
- */
-const save = ({ body }) => userRepo.save(body);
-
-/**
- * Update user in data base
- * @function
- * @param {IUser} body - User data
- * @returns {IUser} - Returns the updated user
- */
-const update = ({ body, params }) => userRepo.update({ id: params.id, ...body });
-
-/**
- * Remove user
- * @async
- * @function
- * @param {string|number} id - User data
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ * @param {NextFunction} next - Next function
  * @returns {void}
  */
-const remove = async (id) => {
-  await userRepo.remove(id);
-  await unsubscribe(id);
-};
-
-export {
-  getAll,
-  get,
-  save,
-  update,
-  remove,
-};
-</code></pre>
+export const transferBoardId = (req, res, next) => {
+  req.boardId = req.params.id;
+  next();
+}</code></pre>
         </article>
     </section>
 

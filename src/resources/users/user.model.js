@@ -4,8 +4,8 @@ import { CONSTANTS } from '../../common/constants.js';
 import { Schema } from '../../models/Schema.js';
 
 /**
-* A user
-* @typedef {Object} UserData
+* User model
+* @typedef {Object} IUser
 * @property {string|number} [id] - User ID
 * @property {string} name - User name
 * @property {string} login - User login (optional)
@@ -19,7 +19,7 @@ const { USERS } = CONSTANTS;
  */
 export class User extends Schema {
   /**
-  * @param {UserData} userData - User data from request
+  * @param {IUser} user - User data from request
   */
   constructor({
     id = uuid(),
@@ -30,7 +30,7 @@ export class User extends Schema {
     super();
 
     /**
-     * @property {string|number} [id] - User ID
+     * @property {string|number} id - User ID
      */
     this.id = id;
 
@@ -85,7 +85,7 @@ export class User extends Schema {
 
   /**
    * Get all users
-   * @returns {Array<UserData>} - Returns users array
+   * @returns {Array<IUser>} - Returns users array
    */
   static getAll() {
     const users = new Database().getAll(USERS);

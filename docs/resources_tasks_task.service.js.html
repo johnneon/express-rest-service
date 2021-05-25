@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resources/users/user.service.js</title>
+    <title>JSDoc: Source: resources/tasks/task.service.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resources/users/user.service.js</h1>
+    <h1 class="page-title">Source: resources/tasks/task.service.js</h1>
 
     
 
@@ -26,65 +26,72 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { unsubscribe } from '../tasks/task.service.js';
-import * as userRepo from './user.memory.repository.js';
+            <pre class="prettyprint source linenums"><code>import * as tasksRepo from './task.memory.repository.js';
 
 /**
  * User repository module
- * @module User service
+ * @module Task service
  */
-
 
 /**
  * Function that get all users
  * @function
- * @returns {Array&lt;IUser>} - Returns all users
+ * @param {string|number} id - Task id
+ * @returns {Array&lt;ITask>} - Returns all tasks
  */
-const getAll = () => userRepo.getAll();
+export const getAll = (id) => tasksRepo.getAll(id);
 
 /**
  * Get user by id
  * @function
- * @param {string|number} id - User id
- * @returns {IUser} Returns the searched user
+ * @param {Request} req - Express request object
+ * @returns {ITask} Returns the searched task
  */
-const get = (id) => userRepo.get(id);
+export const get = ({ params }) => tasksRepo.get(params.id);
 
 /**
  * Save user
  * @function
- * @param {IUser} user - User data to register 
- * @returns {IUser} - Returns the saved user
+ * @param {Request} req - Express request object 
+ * @returns {ITask} - Returns the saved task
  */
-const save = ({ body }) => userRepo.save(body);
+export const save = ({ body, boardId }) => tasksRepo.save({ ...body, boardId});
 
 /**
  * Update user in data base
  * @function
- * @param {IUser} body - User data
- * @returns {IUser} - Returns the updated user
+ * @param {Request} req - Express request object
+ * @returns {ITask} - Returns the updated task
  */
-const update = ({ body, params }) => userRepo.update({ id: params.id, ...body });
+export const update = ({ body, params, boardId }) => 
+  tasksRepo.update({ ...body, id: params.id, boardId });
 
-/**
+  /**
  * Remove user
  * @async
  * @function
- * @param {string|number} id - User data
+ * @param {Request} req - Express request object 
  * @returns {void}
  */
-const remove = async (id) => {
-  await userRepo.remove(id);
-  await unsubscribe(id);
-};
+export const remove = ({ params }) => tasksRepo.remove(params.id);
 
-export {
-  getAll,
-  get,
-  save,
-  update,
-  remove,
-};
+/**
+ * Remove many task from data base
+ * @async
+ * @function
+ * @param {string|number} boardId - Board id
+ * @returns {void}
+ */
+export const removeAllById = (boardId) => tasksRepo.removeAllById(boardId);
+
+/**
+ * Unsubscribes users from tasks
+ * @async
+ * @function
+ * @param {string|number} userId - User id
+ * @returns {Array&lt;ITask>}
+ */
+export const unsubscribe = (userId) => tasksRepo.unsubscribe(userId);
 </code></pre>
         </article>
     </section>

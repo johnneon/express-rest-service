@@ -6,19 +6,10 @@ import { User } from "./user.model.js";
  */
 
 /**
-* A user
-* @typedef {Object} User
-* @property {string|number} [id] - User ID
-* @property {string} name - User name
-* @property {string} login - User login (optional)
-* @property {string} password - User is active
-*/
-
-/**
  * Function that get all users from data base
  * @async
  * @function
- * @returns {Array<User>} - Returns all users from data base
+ * @returns {Array<IUser>} - Returns all users from data base
  */
 const getAll = async () => {
   const users = User.getAll();
@@ -31,7 +22,7 @@ const getAll = async () => {
  * @async
  * @function
  * @param {string|number} id - User id
- * @returns {User} Returns the searched user from data base
+ * @returns {IUser} Returns the searched user from data base
  */
 const get = async (id) => {
   try {
@@ -47,8 +38,8 @@ const get = async (id) => {
  * Save user to data base
  * @async
  * @function
- * @param {User} user - User data to register 
- * @returns {User} - Returns the saved user from data base
+ * @param {IUser} user - User data to register 
+ * @returns {IUser} - Returns the saved user from data base
  */
 const save = ({ login, name, password }) => {
   try {
@@ -66,8 +57,8 @@ const save = ({ login, name, password }) => {
  * Update user in data base
  * @async
  * @function
- * @param {User} body - User data
- * @returns {User} - Returns the updated user from data base
+ * @param {IUser} body - User data
+ * @returns {IUser} - Returns the updated user from data base
  */
 const update = async (body) => {
   try {
