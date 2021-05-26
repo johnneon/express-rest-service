@@ -1,4 +1,5 @@
-import { User } from "./user.model.js";
+import { IUser } from '../../types/IUser';
+import { User } from "./user.model";
 
 /**
  * User repository module
@@ -11,7 +12,7 @@ import { User } from "./user.model.js";
  * @function
  * @returns {Promise<IUser[]>} - Returns all users from data base
  */
-const getAll = async () => {
+const getAll = async (): Promise<IUser[]> => {
   const users = await User.getAll();
 
   return users;
@@ -24,7 +25,7 @@ const getAll = async () => {
  * @param {string|number} id - User id
  * @returns {Promise<IUser>} Returns the searched user from data base
  */
-const get = async (id) => {
+const get = async (id: string|number): Promise<IUser | null> => {
   try {
     const user = await User.getUserById(id);
   
@@ -41,7 +42,7 @@ const get = async (id) => {
  * @param {IUser} user - User data to register 
  * @returns {Promise<IUser>} - Returns the saved user from data base
  */
-const save = async ({ login, name, password }) => {
+const save = async ({ login, name, password }: IUser): Promise<IUser> => {
   try {
     const user = new User({login, name, password});
 
@@ -60,9 +61,11 @@ const save = async ({ login, name, password }) => {
  * @param {IUser} body - User data
  * @returns {Promise<IUser>} - Returns the updated user from data base
  */
-const update = async (body) => {
+const update = async (body: IUser): Promise<IUser> => {
   try {
-    await User.delete(body.id);
+    if (body.id) {
+      await User.delete(body.id);
+    }
     const user = new User(body);
 
     await user.save();
@@ -81,7 +84,7 @@ const update = async (body) => {
  * @param {string|number} id - User data
  * @returns {Promise<void>}
  */
-const remove = async (id) => {
+const remove = async (id: string|number): Promise<void> => {
   try {
     return await User.delete(id);
   } catch (error) {

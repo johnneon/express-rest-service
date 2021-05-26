@@ -6,22 +6,6 @@ import { Schema } from '../../models/Schema.js';
 const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
 
 /**
-* Column model
-* @typedef {Object} IColumn
-* @property {string|number} [id] - Column ID
-* @property {string} title - Column title
-* @property {number} order - Column order (optional)
-*/
-
-/**
-* Board model
-* @typedef {Object} IBoard
-* @property {string|number} [id] - Board ID
-* @property {string} title - Board title
-* @property {IColumn[]} columns - Board columns
-*/
-
-/**
  * Board model
  */
 export class Board extends Schema {

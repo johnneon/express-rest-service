@@ -1,7 +1,23 @@
+import { EntitysNamse, EntitysTypes, SelectorValue } from "../types/simpleTypes";
+
+import { IBoard } from '../types/IBoard';
+import { ITask } from '../types/ITask';
+import { IUser } from '../types/IUser';
+
 /**
  * Class to create a Data Base
  */
 export class Database {
+  private static exists = true;
+
+  private static instance: Database;
+
+  users: IUser[] = [];
+
+  boards: IBoard[] = [];
+
+  tasks: ITask[] = [];
+
   /**
    * @constructor
    */
@@ -24,11 +40,6 @@ export class Database {
     this.boards = [];
 
     /**
-     * @property {Object[]} - Columns data base
-     */
-    this.columns = [];
-
-    /**
      * @property {Object[]} - Tasks data base
      */
     this.tasks = [];
@@ -40,8 +51,10 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {void}
    */
-  save(entity, name) {
-    this[name].push(entity);
+  save(entity: EntitysTypes, name: EntitysNamse): void {
+    if (Array.isArray(this[name])) {
+      (this[name] as EntitysTypes[]).push(entity);
+    }
   }
 
   /**
@@ -50,10 +63,12 @@ export class Database {
    * @param {string} name  - Name of place to save
    * @returns {void}
    */
-  deleteById(id, name) {
-    const entityIndex = this[name].findIndex(entity => entity.id === id);
-
-    this[name].splice(entityIndex, 1);
+  deleteById(id: string|number, name: EntitysNamse): void {
+    if (Array.isArray(this[name])) {
+      const entityIndex = this[name].findIndex((element: EntitysTypes) => element.id === id);
+  
+      this[name].splice(entityIndex, 1);
+    }
   }
 
   /**
@@ -62,8 +77,10 @@ export class Database {
    * @param {string} name  - Name of place to save
    * @returns {void}
    */
-  deleteManyBySelector({selector, value}, name) {
-    this[name] = this[name].filter(entity => entity[selector] !== value);
+  deleteManyBySelector({selector, value}: SelectorValue, name: EntitysNamse): void {
+    if (Array.isArray(this[name]) && this[name].length) {
+      this[name] = (this[name] as []).filter((entity) => entity[selector] !== value);
+    }
   }
 
   /**
@@ -72,8 +89,11 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {Object[]} - Returns array of data
    */
-  getAllBySelector({selector, value}, name) {
-    return this[name].filter(entity => entity[selector] === value);
+  getAllBySelector({selector, value}: SelectorValue, name: EntitysNamse): EntitysTypes[] {
+    if (Array.isArray(this[name])) {
+      return (this[name] as []).filter((entity) => entity[selector] === value);
+    }
+    return [];
   }
 
   /**
@@ -82,17 +102,22 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {Object} - Returns data object
    */
-  getById(id, name) {
-    const condidate = this[name].find(entity => entity.id === id);
+  getById<T extends EntitysTypes>(id: number|string, name: EntitysNamse): T | null {
+    const condidate = (this[name] as []).find((entity: T) => entity.id === id);
+
+    if (!condidate) {
+      return null;
+    }
+    
     return condidate;
   }
 
   /**
    * Get all entitys by db name
    * @param {string} name - Name of place to save
-   * @returns {Object[]} - Returns array of data
+   * @returns {EntitysTypes[]} - Returns array of data
    */
-  getAll(name) {
-    return this[name] || [];
+  getAll<T extends EntitysTypes>(name: EntitysNamse): T[] {
+    return (this[name] as []);
   }
 }

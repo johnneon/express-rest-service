@@ -4,7 +4,7 @@ import cors from 'cors';
 import { join } from 'path';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
-// import userRouter from './resources/users/user.router.js';
+import userRouter from './resources/users/user.router';
 // import boardRouter from './resources/boards/board.router.js';
 // import taskRouter from './resources/tasks/task.router.js';
 // import { transferBoardId } from './utils/transferBoardId.js';
@@ -21,7 +21,7 @@ app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/', greetings);
 
-// app.use('/users', userRouter);
+app.use('/users', userRouter);
 
 // app.use('/boards', boardRouter);
 

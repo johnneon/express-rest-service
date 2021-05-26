@@ -1,23 +1,23 @@
 import { v4 as uuid } from 'uuid';
-import { Database } from '../../db/db.js';
-import { CONSTANTS } from '../../common/constants.js';
-import { Schema } from '../../models/Schema.js';
-
-/**
-* User model
-* @typedef {Object} IUser
-* @property {string|number} [id] - User ID
-* @property {string} name - User name
-* @property {string} login - User login (optional)
-* @property {string} password - User is active
-*/
+import { Database } from '../../db/db';
+import { CONSTANTS } from '../../common/constants';
+import { IUser } from '../../types/IUser';
+import { EntitysNamse } from '../../types/simpleTypes';
 
 const { USERS } = CONSTANTS;
 
 /**
  * User model
  */
-export class User extends Schema {
+export class User {
+  id: number|string;
+
+  name;
+
+  login;
+  
+  password;
+
   /**
   * @param {IUser} user - User data from request
   */
@@ -26,9 +26,7 @@ export class User extends Schema {
     name = 'USER',
     login = 'user',
     password = 'P@55w0rd'
-  } = {}) {
-    super();
-
+  }: IUser) {
     /**
      * @property {string|number} id - User ID
      */
@@ -51,15 +49,34 @@ export class User extends Schema {
   }
 
   /**
+   * Makes user responseble
+   * @param {IUser} user User data 
+   * @returns {IUser} - Responseble object
+   */
+   static toResponse({ id, name, login }: IUser): IUser {
+    return { id, name, login };
+  }
+
+  /**
    * Save user to data base
    * @async
    * @property {Function} save
    * @returns {Promise<void>}
    */
-  async save() {
+  async save(): Promise<void> {
     const db = new Database();
-
-    await db.save(this, USERS);
+    const {
+      name,
+      login,
+      password,
+      id
+    } = this;
+    await db.save({
+      name,
+      login,
+      password,
+      id
+    }, USERS as EntitysNamse);
   }
 
   /**
@@ -68,10 +85,10 @@ export class User extends Schema {
    * @param {string|number} id - User id
    * @returns {Promise<void>}
    */
-  static async delete(id) {
+  static async delete(id: string|number): Promise<void> {
     const db = new Database();
 
-    await db.deleteById(id, USERS);
+    await db.deleteById(id, USERS as EntitysNamse);
   }
 
   /**
@@ -80,10 +97,10 @@ export class User extends Schema {
    * @param {string|number} id - User id
    * @returns {Promise<IUser>} - Returns data object
    */
-  static async getUserById(id) {
+  static async getUserById(id: string|number): Promise<IUser | null> {
     const db = await new Database();
 
-    return db.getById(id, USERS);
+    return db.getById<IUser>(id, USERS as EntitysNamse);
   }
 
   /**
@@ -91,8 +108,8 @@ export class User extends Schema {
    * @async
    * @returns {IUser[]} - Returns users array
    */
-  static async getAll() {
-    const users = await new Database().getAll(USERS);
+  static async getAll(): Promise<IUser[]> {
+    const users = await new Database().getAll<IUser>(USERS as EntitysNamse);
 
     return users;
   }

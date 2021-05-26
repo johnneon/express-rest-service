@@ -1,13 +1,15 @@
 import { Router } from 'express';
-import { OK, CREATED, NO_CONTENT } from 'http-status-codes';
-import { User } from './user.model.js';
+import { StatusCodes } from 'http-status-codes';
+import { User } from './user.model';
 import {
   getAll,
   save,
   get,
   update,
   remove,
-} from './user.service.js';
+} from './user.service';
+
+const { OK, CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes;
 
 const userRouter = Router();
 
@@ -16,14 +18,18 @@ userRouter.post('/', async (req, res) => {
   return res.status(CREATED).json(User.toResponse(user));
 });
 
-userRouter.get('/', async (req, res) => {
+userRouter.get('/', async (_req, res) => {
   const users = await getAll();
   return res.status(OK).json(users.map(User.toResponse));
 });
 
 userRouter.get('/:id', async ({ params }, res) => {
-  const user = await get(params.id);
-  return res.status(OK).json(User.toResponse(user));
+  const { id } = params;
+  const user = await get(id as string);
+  if (user) {
+    return res.status(OK).json(User.toResponse(user));
+  }
+  return res.status(NOT_FOUND);
 });
 
 userRouter.put('/:id', async (req, res) => {
@@ -32,7 +38,8 @@ userRouter.put('/:id', async (req, res) => {
 });
 
 userRouter.delete('/:id', async ({ params }, res) => {
-  await remove(params.id);
+  const { id } = params;
+  await remove(id as string);
   return res.sendStatus(NO_CONTENT);
 });
 
