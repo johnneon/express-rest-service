@@ -5,9 +5,9 @@ import { join } from 'path';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 import userRouter from './resources/users/user.router';
-// import boardRouter from './resources/boards/board.router.js';
-// import taskRouter from './resources/tasks/task.router.js';
-// import { transferBoardId } from './utils/transferBoardId.js';
+import boardRouter from './resources/boards/board.router';
+import taskRouter from './resources/tasks/task.router';
+import { transferBoardId } from './utils/transferBoardId';
 import { greetings } from './utils/greetings';
 
 const app: Application = express();
@@ -23,8 +23,8 @@ app.use('/', greetings);
 
 app.use('/users', userRouter);
 
-// app.use('/boards', boardRouter);
+app.use('/boards', boardRouter);
 
-// boardRouter.use('/:id/tasks', transferBoardId, taskRouter);
+boardRouter.use('/:id/tasks', transferBoardId, taskRouter);
 
 export default app;

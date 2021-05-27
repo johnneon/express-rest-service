@@ -1,14 +1,29 @@
 import { v4 as uuid } from 'uuid';
-import { Database } from '../../db/db.js';
-import { CONSTANTS } from '../../common/constants.js';
-import { Schema } from '../../models/Schema.js';
+import { Database } from '../../db/db';
+import { CONSTANTS } from '../../common/constants';
+import { ITask } from '../../types/ITask';
+import { EntitysNames } from '../../types/simpleTypes';
 
 const { TASKS } = CONSTANTS;
 
 /**
  * Task model
  */
-export class Task extends Schema {
+export class Task {
+  id: number|string;
+
+  title;
+
+  order;
+
+  description;
+
+  userId: string | number | null;
+
+  boardId: string | number;
+
+  columnId: string | number;
+  
   /**
   * @param {ITask} task - Task data from request
   */
@@ -20,9 +35,7 @@ export class Task extends Schema {
     userId = '',
     boardId = '',
     columnId = '',
-  } = {}) {
-    super();
-
+  }: ITask) {
     /**
      * @property {string|number} id - Task ID
      */
@@ -60,15 +73,24 @@ export class Task extends Schema {
   }
 
   /**
+   * Makes task responseble
+   * @param {ITask} task User data 
+   * @returns {ITask} - Responseble object
+   */
+   static toResponse(task: ITask): ITask {
+    return task;
+  }
+
+  /**
    * Save task to data base
    * @async
    * @property {Function} save
    * @returns {Promise<void>}
    */
-  async save() {
+  async save(): Promise<void> {
     const db = new Database();
 
-    db.save(this, TASKS);
+    db.save(this, TASKS as EntitysNames);
   }
 
   /**
@@ -77,10 +99,10 @@ export class Task extends Schema {
    * @param {string|number} id - Sekector id
    * @returns {Promise<void>}
    */
-  static async deleteManyById(id) {
+  static async deleteManyById(id: string|number): Promise<void> {
     const db = new Database();
 
-    db.deleteManyBySelector({ selector: 'boardId', value: id }, TASKS);
+    db.deleteManyBySelector({ selector: 'boardId', value: id }, TASKS as EntitysNames);
   }
 
   /**
@@ -89,10 +111,10 @@ export class Task extends Schema {
    * @param {string|number} id - Task id
    * @returns {Promise<void>}
    */
-  static async delete(id) {
+  static async delete(id: string|number): Promise<void> {
     const db = new Database();
 
-    db.deleteById(id, TASKS);
+    db.deleteById(id, TASKS as EntitysNames);
   }
 
   /**
@@ -101,20 +123,26 @@ export class Task extends Schema {
    * @param {string|number} id - Task id
    * @returns {Promise<ITask>} - Returns task object
    */
-  static async getTaskById(id) {
+  static async getTaskById(id: string|number): Promise<ITask | null> {
     const db = new Database();
 
-    return db.getById(id, TASKS);
+    return db.getById<ITask>(id, TASKS as EntitysNames);
   }
 
   /**
    * Get all tasks
    * @async
-   * @returns {Promise<IUser[]>} - Returns tasks array
+   * @param {string|number} id - Board id
+   * @param {string} - Selector for search
+   * @returns {Promise<ITask[]>} - Returns tasks array
    */
-  static async getAll(id, selector) {
-    const tasks = new Database().getAllBySelector({ selector: selector || 'boardId', value: id }, TASKS);
-    return tasks;
+  static async getAll(id: string|number, selector?: string): Promise<ITask[]> {
+    const tasks = new Database()
+      .getAllBySelector(
+        { selector: selector || 'boardId', value: id },
+        TASKS as EntitysNames
+      );
+    return tasks as [];
   }
 }
 

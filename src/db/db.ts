@@ -1,4 +1,4 @@
-import { EntitysNamse, EntitysTypes, SelectorValue } from "../types/simpleTypes";
+import { EntitysNames, EntitysTypes, SelectorValue } from "../types/simpleTypes";
 
 import { IBoard } from '../types/IBoard';
 import { ITask } from '../types/ITask';
@@ -8,7 +8,7 @@ import { IUser } from '../types/IUser';
  * Class to create a Data Base
  */
 export class Database {
-  private static exists = true;
+  private static exists: boolean;
 
   private static instance: Database;
 
@@ -51,7 +51,7 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {void}
    */
-  save(entity: EntitysTypes, name: EntitysNamse): void {
+  save(entity: EntitysTypes, name: EntitysNames): void {
     if (Array.isArray(this[name])) {
       (this[name] as EntitysTypes[]).push(entity);
     }
@@ -63,7 +63,7 @@ export class Database {
    * @param {string} name  - Name of place to save
    * @returns {void}
    */
-  deleteById(id: string|number, name: EntitysNamse): void {
+  deleteById(id: string|number, name: EntitysNames): void {
     if (Array.isArray(this[name])) {
       const entityIndex = this[name].findIndex((element: EntitysTypes) => element.id === id);
   
@@ -77,7 +77,7 @@ export class Database {
    * @param {string} name  - Name of place to save
    * @returns {void}
    */
-  deleteManyBySelector({selector, value}: SelectorValue, name: EntitysNamse): void {
+  deleteManyBySelector({selector, value}: SelectorValue, name: EntitysNames): void {
     if (Array.isArray(this[name]) && this[name].length) {
       this[name] = (this[name] as []).filter((entity) => entity[selector] !== value);
     }
@@ -89,7 +89,7 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {Object[]} - Returns array of data
    */
-  getAllBySelector({selector, value}: SelectorValue, name: EntitysNamse): EntitysTypes[] {
+  getAllBySelector({selector, value}: SelectorValue, name: EntitysNames): EntitysTypes[] {
     if (Array.isArray(this[name])) {
       return (this[name] as []).filter((entity) => entity[selector] === value);
     }
@@ -102,7 +102,7 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {Object} - Returns data object
    */
-  getById<T extends EntitysTypes>(id: number|string, name: EntitysNamse): T | null {
+  getById<T extends EntitysTypes>(id: number|string, name: EntitysNames): T | null {
     const condidate = (this[name] as []).find((entity: T) => entity.id === id);
 
     if (!condidate) {
@@ -117,7 +117,7 @@ export class Database {
    * @param {string} name - Name of place to save
    * @returns {EntitysTypes[]} - Returns array of data
    */
-  getAll<T extends EntitysTypes>(name: EntitysNamse): T[] {
+  getAll<T extends EntitysTypes>(name: EntitysNames): T[] {
     return (this[name] as []);
   }
 }

@@ -1,13 +1,15 @@
 import { Router } from 'express';
-import { OK, CREATED, NO_CONTENT, NOT_FOUND } from 'http-status-codes';
-import { Task } from './task.model.js';
+import { StatusCodes } from 'http-status-codes';
+import { Task } from './task.model';
 import {
   getAll,
   save,
   get,
   remove,
   update,
-} from './task.service.js';
+} from './task.service';
+
+const { OK, CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes;
 
 const taskRouter = Router();
 
@@ -17,7 +19,7 @@ taskRouter.post('/', async (req, res) => {
 });
 
 taskRouter.get('/', async (req, res) => {
-  const tasks = await getAll(req.boardId);
+  const tasks = await getAll(req.body.boardId);
   return res.json(tasks.map(Task.toResponse));
 });
 

@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { Database } from '../../db/db';
 import { CONSTANTS } from '../../common/constants';
 import { IUser } from '../../types/IUser';
-import { EntitysNamse } from '../../types/simpleTypes';
+import { EntitysNames } from '../../types/simpleTypes';
 
 const { USERS } = CONSTANTS;
 
@@ -53,7 +53,7 @@ export class User {
    * @param {IUser} user User data 
    * @returns {IUser} - Responseble object
    */
-   static toResponse({ id, name, login }: IUser): IUser {
+  static toResponse({ id, name, login }: IUser): IUser {
     return { id, name, login };
   }
 
@@ -76,7 +76,7 @@ export class User {
       login,
       password,
       id
-    }, USERS as EntitysNamse);
+    }, USERS as EntitysNames);
   }
 
   /**
@@ -88,7 +88,7 @@ export class User {
   static async delete(id: string|number): Promise<void> {
     const db = new Database();
 
-    await db.deleteById(id, USERS as EntitysNamse);
+    await db.deleteById(id, USERS as EntitysNames);
   }
 
   /**
@@ -100,7 +100,7 @@ export class User {
   static async getUserById(id: string|number): Promise<IUser | null> {
     const db = await new Database();
 
-    return db.getById<IUser>(id, USERS as EntitysNamse);
+    return db.getById<IUser>(id, USERS as EntitysNames);
   }
 
   /**
@@ -109,7 +109,7 @@ export class User {
    * @returns {IUser[]} - Returns users array
    */
   static async getAll(): Promise<IUser[]> {
-    const users = await new Database().getAll<IUser>(USERS as EntitysNamse);
+    const users = await new Database().getAll<IUser>(USERS as EntitysNames);
 
     return users;
   }

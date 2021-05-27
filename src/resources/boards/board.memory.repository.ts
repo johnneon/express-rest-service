@@ -1,4 +1,5 @@
-import { Board } from "./board.model.js";
+import { IBoard } from "../../types/IBoard";
+import { Board } from "./board.model";
 
 /**
  * Board repository module
@@ -11,7 +12,7 @@ import { Board } from "./board.model.js";
  * @function
  * @returns {Promise<IBoard[]>} - Returns all boards from data base
  */
-const getAll = async () => {
+const getAll = async (): Promise<IBoard[]> => {
   try {
     const boards = Board.getAll();
   
@@ -28,7 +29,7 @@ const getAll = async () => {
  * @param {string|number} id - Board id
  * @returns {Promise<IBoard>} Returns the searched board from data base
  */
-const get = async (id) => {
+const get = async (id: string|number): Promise<IBoard | null> => {
   try {
     const board = await Board.getBoardById(id);
   
@@ -45,7 +46,7 @@ const get = async (id) => {
  * @param {IBoard} board - Board data to register 
  * @returns {Promise<IBoard>} - Returns the saved board from data base
  */
-const save = async ({ title, columns }) => {
+const save = async ({ title, columns }: IBoard): Promise<IBoard> => {
   try {
     const board = new Board({ title, columns });
 
@@ -64,9 +65,11 @@ const save = async ({ title, columns }) => {
  * @param {IBoard} body - Board data
  * @returns {Promise<IBoard>} - Returns the updated board from data base
  */
-const update = async (body) => {
+const update = async (body: IBoard): Promise<IBoard> => {
   try {
-    await Board.delete(body.id);
+    if (body.id) {
+      await Board.delete(body.id);
+    }
     const board = new Board(body);
 
     await board.save();
@@ -84,7 +87,7 @@ const update = async (body) => {
  * @param {string|number} id - Board data
  * @returns {Promise<void>}
  */
-const remove = async (id) => {
+const remove = async (id: string|number): Promise<void> => {
   try {
     return await Board.delete(id);
   } catch (error) {

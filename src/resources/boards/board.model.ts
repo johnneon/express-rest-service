@@ -1,14 +1,22 @@
 import { v4 as uuid } from 'uuid';
-import { Database } from '../../db/db.js';
-import { CONSTANTS } from '../../common/constants.js';
-import { Schema } from '../../models/Schema.js';
+import { Database } from '../../db/db';
+import { CONSTANTS } from '../../common/constants';
+import { IColumn } from '../../types/IColumn';
+import { IBoard } from '../../types/IBoard';
+import { EntitysNames } from '../../types/simpleTypes';
 
 const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
 
 /**
  * Board model
  */
-export class Board extends Schema {
+export class Board {
+  id: number|string;
+
+  title;
+
+  columns: IColumn[];
+
   /**
   * @param {IBoard} board - Board data from request
   */
@@ -16,9 +24,7 @@ export class Board extends Schema {
     id = uuid(),
     title = 'BOARD',
     columns = [],
-  } = {}) {
-    super();
-
+  }: IBoard) {
     /**
      * @property {string|number} id - Board ID
      */
@@ -36,12 +42,21 @@ export class Board extends Schema {
   }
 
   /**
+   * Makes board responseble
+   * @param {IBoard} board Board data 
+   * @returns {IBoard} - Responseble object
+   */
+   static toResponse({ id, title, columns }: IBoard): IBoard {
+    return { id, title, columns };
+  }
+
+  /**
    * Save board to data base
    * @async
    * @property {Function} save
    * @returns {Promise<void>}
    */
-  async save() {
+  async save(): Promise<void> {
     const db = new Database();
 
     if (this.columns?.length > 0) {
@@ -54,7 +69,7 @@ export class Board extends Schema {
       });
     }
 
-    await db.save(this, BOARDS);
+    await db.save(this, BOARDS as EntitysNames);
   }
 
   /**
@@ -63,18 +78,11 @@ export class Board extends Schema {
    * @param {string|number} id - User id
    * @returns {Promise<void>}
    */
-  static async delete(id) {
+  static async delete(id: string|number): Promise<void> {
     const db = new Database();
 
-    await db.deleteById(id, BOARDS);
-    await db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS);
-  }
-
-  static async findByIdAndUpdate(body) {
-    const db = new Database();
-    const board = await db.findByIdAndUpdate(body, BOARDS);
-
-    return board;
+    await db.deleteById(id, BOARDS as EntitysNames);
+    await db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS as EntitysNames);
   }
 
   /**
@@ -83,9 +91,14 @@ export class Board extends Schema {
    * @param {string|number} id - Board id
    * @returns {Promise<IBoard>} - Returns board data
    */
-  static async getBoardById(id) {
+  static async getBoardById(id: string|number): Promise<IBoard | null> {
     const db = new Database();
-    const board = await db.getById(id, BOARDS);
+    const board = await db.getById<IBoard>(id, BOARDS as EntitysNames);
+
+    if (!board) {
+      return null;
+    }
+
     return board;
   }
 
@@ -94,8 +107,8 @@ export class Board extends Schema {
    * @async
    * @returns {Promise<IBoard[]>} - Returns boards array
    */
-  static async getAll() {
-    const boards = await new Database().getAll(BOARDS);
+  static async getAll(): Promise<IBoard[]> {
+    const boards = await new Database().getAll<IBoard>(BOARDS as EntitysNames);
 
     return boards;
   }

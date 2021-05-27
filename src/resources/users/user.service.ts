@@ -1,5 +1,5 @@
-// import { unsubscribe } from '../tasks/task.service.js';
 import { Request } from 'express';
+import { unsubscribe } from '../tasks/task.service';
 import { IUser } from '../../types/IUser';
 import * as userRepo from './user.memory.repository';
 
@@ -35,7 +35,7 @@ const save = ({ body }: Request): Promise<IUser> => userRepo.save(body);
 /**
  * Update user in data base
  * @function
- * @param {IUser} body - User data
+ * @param {Request} req - Express req data
  * @returns {Promise<IUser>} - Returns the updated user
  */
 const update = ({ body, params }: Request): Promise<IUser> => {
@@ -52,7 +52,7 @@ const update = ({ body, params }: Request): Promise<IUser> => {
  */
 const remove = async (id: string|number): Promise<void> => {
   await userRepo.remove(id);
-  // await unsubscribe(id);
+  await unsubscribe(id);
 };
 
 export {

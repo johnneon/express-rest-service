@@ -11,7 +11,7 @@
 */
 
 export interface ITask {
-  id: string|number;
+  id?: string|number;
   title: string;
   order: number;
   description: string;
