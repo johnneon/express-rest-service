@@ -17,7 +17,7 @@
   },
   "opts": {
     "recurse": true,
-    "destination": "./docs/",
+    "destination": "./api-docs/",
     "template": "node_modules/better-docs"
   }
 }

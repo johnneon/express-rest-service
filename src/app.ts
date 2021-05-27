@@ -17,6 +17,8 @@ app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
 
+app.use('/api-docs', express.static(join(__dirname, '../api-docs')));
+
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/', greetings);
