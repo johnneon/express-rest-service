@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> resources/users/user.memory.repository.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,33 +75,119 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>resources/users/user.memory.repository.ts</h1>
                 </header>
                 
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { IUser } from '../../types/IUser';
+import { User } from "./user.model";
+
+/**
+ * User repository module
+ * @module User repository
+ */
+
+/**
+ * Function that get all users from data base
+ * @async
+ * @function
+ * @returns {Promise&lt;IUser[]>} - Returns all users from data base
+ */
+const getAll = async (): Promise&lt;IUser[]> => {
+  const users = await User.getAll();
+
+  return users;
+};
+
+/**
+ * Get user by id
+ * @async
+ * @function
+ * @param {string|number} id - User id
+ * @returns {Promise&lt;IUser>} Returns the searched user from data base
+ */
+const get = async (id: string|number): Promise&lt;IUser | null> => {
+  try {
+    const user = await User.getUserById(id);
+  
+    return user;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * Save user to data base
+ * @async
+ * @function
+ * @param {IUser} user - User data to register 
+ * @returns {Promise&lt;IUser>} - Returns the saved user from data base
+ */
+const save = async ({ login, name, password }: IUser): Promise&lt;IUser> => {
+  try {
+    const user = new User({login, name, password});
+
+    await user.save();
+
+    return user;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * Update user in data base
+ * @async
+ * @function
+ * @param {IUser} body - User data
+ * @returns {Promise&lt;IUser>} - Returns the updated user from data base
+ */
+const update = async (body: IUser): Promise&lt;IUser> => {
+  try {
+    if (body.id) {
+      await User.delete(body.id);
+    }
+    const user = new User(body);
+
+    await user.save();
+
+    return user;
+  } catch (error) {
+    return error;
+  }
+};
 
 
-    <h3> </h3>
+/**
+ * Remove user from data base
+ * @async
+ * @function
+ * @param {string|number} id - User data
+ * @returns {Promise&lt;void>}
+ */
+const remove = async (id: string|number): Promise&lt;void> => {
+  try {
+    return await User.delete(id);
+  } catch (error) {
+    return error;
+  }
+};
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
+};</code></pre>
+        </article>
+    </section>
 
 
 

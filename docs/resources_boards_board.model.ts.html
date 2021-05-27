@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> resources/boards/board.model.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,33 +75,135 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>resources/boards/board.model.ts</h1>
                 </header>
                 
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { v4 as uuid } from 'uuid';
+import { Database } from '../../db/db';
+import { CONSTANTS } from '../../common/constants';
+import { IColumn } from '../../types/IColumn';
+import { IBoard } from '../../types/IBoard';
+import { EntitysNames } from '../../types/simpleTypes';
 
+const { BOARDS, TASKS, BOARD_ID } = CONSTANTS;
 
-    <h3> </h3>
+/**
+ * Board model
+ */
+export class Board {
+  id: number|string;
 
+  title;
 
+  columns: IColumn[];
 
+  /**
+  * @param {IBoard} board - Board data from request
+  */
+  constructor({
+    id = uuid(),
+    title = 'BOARD',
+    columns = [],
+  }: IBoard) {
+    /**
+     * @property {string|number} id - Board ID
+     */
+    this.id = id;
 
+    /**
+     * @property {string} title - Board title
+     */
+    this.title = title;
 
+    /**
+     * @property {IColumn[]} columns - Board columns
+     */
+    this.columns = columns;
+  }
 
+  /**
+   * Makes board responseble
+   * @param {IBoard} board Board data 
+   * @returns {IBoard} - Responseble object
+   */
+   static toResponse({ id, title, columns }: IBoard): IBoard {
+    return { id, title, columns };
+  }
 
+  /**
+   * Save board to data base
+   * @async
+   * @property {Function} save
+   * @returns {Promise&lt;void>}
+   */
+  async save(): Promise&lt;void> {
+    const db = new Database();
 
+    if (this.columns?.length > 0) {
+      this.columns = this.columns.map((col) => {
+        if (!col?.id) {
+          const columnWithId = { ...col, id: uuid() };
+          return columnWithId;
+        }
+        return col;
+      });
+    }
 
+    await db.save(this, BOARDS as EntitysNames);
+  }
 
-    
+  /**
+   * Delete board by id and tasks
+   * @async
+   * @param {string|number} id - User id
+   * @returns {Promise&lt;void>}
+   */
+  static async delete(id: string|number): Promise&lt;void> {
+    const db = new Database();
 
+    await db.deleteById(id, BOARDS as EntitysNames);
+    await db.deleteManyBySelector({ selector: BOARD_ID, value: id }, TASKS as EntitysNames);
+  }
 
+  /**
+   * Get board by id
+   * @async
+   * @param {string|number} id - Board id
+   * @returns {Promise&lt;IBoard>} - Returns board data
+   */
+  static async getBoardById(id: string|number): Promise&lt;IBoard | null> {
+    const db = new Database();
+    const board = await db.getById&lt;IBoard>(id, BOARDS as EntitysNames);
 
+    if (!board) {
+      return null;
+    }
 
+    return board;
+  }
 
+  /**
+   * Get all boards
+   * @async
+   * @returns {Promise&lt;IBoard[]>} - Returns boards array
+   */
+  static async getAll(): Promise&lt;IBoard[]> {
+    const boards = await new Database().getAll&lt;IBoard>(BOARDS as EntitysNames);
+
+    return boards;
+  }
+}
+
+</code></pre>
+        </article>
+    </section>
 
 
 

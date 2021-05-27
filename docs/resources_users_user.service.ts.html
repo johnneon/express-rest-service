@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> resources/users/user.service.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,33 +75,83 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>resources/users/user.service.ts</h1>
                 </header>
                 
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Request } from 'express';
+import { unsubscribe } from '../tasks/task.service';
+import { IUser } from '../../types/IUser';
+import * as userRepo from './user.memory.repository';
+
+/**
+ * User repository module
+ * @module User service
+ */
 
 
-    <h3> </h3>
+/**
+ * Function that get all users
+ * @function
+ * @returns {Promise&lt;IUser[]>} - Returns all users
+ */
+const getAll = (): Promise&lt;IUser[]> => userRepo.getAll();
 
+/**
+ * Get user by id
+ * @function
+ * @param {string|number} id - User id
+ * @returns {Promise&lt;IUser>} Returns the searched user
+ */
+const get = (id: string|number): Promise&lt;IUser | null> => userRepo.get(id);
 
+/**
+ * Save user
+ * @function
+ * @param {IUser} user - User data to register 
+ * @returns {Promise&lt;IUser>} - Returns the saved user
+ */
+const save = ({ body }: Request): Promise&lt;IUser> => userRepo.save(body);
 
+/**
+ * Update user in data base
+ * @function
+ * @param {Request} req - Express req data
+ * @returns {Promise&lt;IUser>} - Returns the updated user
+ */
+const update = ({ body, params }: Request): Promise&lt;IUser> => {
+  const { id } = params;
+  return userRepo.update({ id, ...body })
+};
 
+/**
+ * Remove user
+ * @async
+ * @function
+ * @param {string|number} id - User data
+ * @returns {Promise&lt;void>}
+ */
+const remove = async (id: string|number): Promise&lt;void> => {
+  await userRepo.remove(id);
+  await unsubscribe(id);
+};
 
-
-
-
-
-
-    
-
-
-
-
-
+export {
+  getAll,
+  get,
+  save,
+  update,
+  remove,
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

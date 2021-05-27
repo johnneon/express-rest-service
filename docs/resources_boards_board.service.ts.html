@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> resources/boards/board.service.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,33 +75,76 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>resources/boards/board.service.ts</h1>
                 </header>
                 
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Request } from 'express';
+import { IBoard } from '../../types/IBoard';
+import * as boardsRepo from './board.memory.repository';
+import { removeAllById } from '../tasks/task.service';
 
+/**
+ * Board repository module
+ * @module Board service
+ */
 
-    <h3> </h3>
+/**
+ * Function that get all boards
+ * @function
+ * @returns {Promise&lt;IBoard[]>} - Returns all boards
+ */
+export const getAll = (): Promise&lt;IBoard[]> => boardsRepo.getAll();
 
+/**
+ * Get board by id
+ * @function
+ * @param {string|number} id - Board id
+ * @returns {Promise&lt;IBoard>} Returns the searched board
+ */
+export const get =
+  (id: string|number): Promise&lt;IBoard | null> => boardsRepo.get(id);
 
+/**
+ * Save board
+ * @function
+ * @param {IBoard} board - Board data to register 
+ * @returns {Promise&lt;IBoard>} - Returns the saved board
+ */
+export const save = ({ body }: Request): Promise&lt;IBoard> => boardsRepo.save(body);
 
+/**
+ * Update board in data base
+ * @function
+ * @param {Request} req - Express req data
+ * @returns {Promise&lt;IBoard>} - Returns the updated board
+ */
+export const update = ({ body, params }: Request): Promise&lt;IBoard> => {
+  const { id } = params;
+    return boardsRepo.update({ id, ...body })
+  };
 
+/**
+ * Remove board and with all columns and tasks
+ * @async
+ * @function
+ * @param {string|number} id - Board data
+ * @returns {Promise&lt;void>}
+ */
+export const remove = async (id: string|number): Promise&lt;void> => {
+  await boardsRepo.remove(id);
+  await removeAllById(id);
+};
 
-
-
-
-
-
-    
-
-
-
-
-
+</code></pre>
+        </article>
+    </section>
 
 
 

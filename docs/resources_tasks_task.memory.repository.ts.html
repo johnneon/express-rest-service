@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> resources/tasks/task.memory.repository.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,33 +75,173 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>resources/tasks/task.memory.repository.ts</h1>
                 </header>
                 
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { ITask } from "../../types/ITask";
+import { Task } from "./task.model";
 
+/**
+ * User repository module
+ * @module Task repository
+ */
 
-    <h3> </h3>
+/**
+ * Function that get all tasks from data base
+ * @async
+ * @function
+ * @param {string} boardId - Board ID for search
+ * @returns {Promise&lt;ITask[]>} - Returns all tasks from data base
+ */
+const getAll = async (boardId: string): Promise&lt;ITask[]> => {
+  const tasks =  await Task.getAll(boardId);
 
+  return tasks;
+};
 
+/**
+ * Get task by id
+ * @async
+ * @function
+ * @param {string|number} id - Task id
+ * @returns {Promise&lt;ITask>} Returns the searched task from data base
+ */
+const get = async (id: string|number): Promise&lt;ITask | null> => {
+  try {
+    const task = await Task.getTaskById(id);
+  
+    return task;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Save task to data base
+ * @async
+ * @function
+ * @param {ITask} newTask - Task data to register 
+ * @returns {Promise&lt;ITask>} - Returns the saved task from data base
+ */
+const save = async ({
+  title,
+  order,
+  description,
+  userId,
+  boardId,
+  columnId,
+}: ITask): Promise&lt;ITask> => {
+  try {
+    const task = new Task({
+      title,
+      order,
+      description,
+      userId,
+      boardId,
+      columnId,
+    });
 
+    await task.save();
 
+    return task;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Update task in data base
+ * @async
+ * @function
+ * @param {ITask} body - Task data
+ * @returns {Promise&lt;ITask>} - Returns the updated task from data base
+ */
+const update = async (body: ITask): Promise&lt;ITask> => {
+  try {
+    if (body.id) {
+      await Task.delete(body.id);
+    }
+    const task = new Task(body);
 
+    task.save();
 
+    return task;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Remove task from data base
+ * @async
+ * @function
+ * @param {string|number} id - Task data
+ * @returns {Promise&lt;void>}
+ */
+const remove = async (id: string|number): Promise&lt;void> => {
+  try {
+    return await Task.delete(id);
+  } catch (error) {
+    return error;
+  }
+};
 
-    
+/**
+ * Remove many task from data base
+ * @async
+ * @function
+ * @param {string|number} boardId - Board id
+ * @returns {Promise&lt;void>}
+ */
+const removeAllById = async (boardId: string|number): Promise&lt;void> => {
+  try {
+    return await Task.deleteManyById(boardId);
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Unsubscribes users from tasks
+ * @async
+ * @function
+ * @param {string|number} userId - User id
+ * @returns {Promise&lt;ITask[]>}
+ */
+const unsubscribe = async (userId: string|number): Promise&lt;ITask[]> => {
+  try {
+    const tasks = await Task.getAll(userId, 'userId');
+    await tasks.forEach(async task => {
+      if (task.id) {
+        await Task.delete(task.id);
+        await new Task({ ...task, userId: null }).save();
+      }
+    });
+    return tasks;
+  } catch (error) {
+    return error;
+  }
+};
 
-
-
-
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
+  removeAllById,
+  unsubscribe,
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

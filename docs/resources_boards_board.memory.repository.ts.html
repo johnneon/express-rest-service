@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> resources/boards/board.memory.repository.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,33 +75,122 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>resources/boards/board.memory.repository.ts</h1>
                 </header>
                 
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { IBoard } from "../../types/IBoard";
+import { Board } from "./board.model";
 
+/**
+ * Board repository module
+ * @module Board repository
+ */
 
-    <h3> </h3>
+/**
+ * Function that get all boards from data base
+ * @async
+ * @function
+ * @returns {Promise&lt;IBoard[]>} - Returns all boards from data base
+ */
+const getAll = async (): Promise&lt;IBoard[]> => {
+  try {
+    const boards = Board.getAll();
+  
+    return boards;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Get board by id
+ * @async
+ * @function
+ * @param {string|number} id - Board id
+ * @returns {Promise&lt;IBoard>} Returns the searched board from data base
+ */
+const get = async (id: string|number): Promise&lt;IBoard | null> => {
+  try {
+    const board = await Board.getBoardById(id);
+  
+    return board;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Save board to data base
+ * @async
+ * @function
+ * @param {IBoard} board - Board data to register 
+ * @returns {Promise&lt;IBoard>} - Returns the saved board from data base
+ */
+const save = async ({ title, columns }: IBoard): Promise&lt;IBoard> => {
+  try {
+    const board = new Board({ title, columns });
 
+    await board.save();
 
+    return board;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Update board in data base
+ * @async
+ * @function
+ * @param {IBoard} body - Board data
+ * @returns {Promise&lt;IBoard>} - Returns the updated board from data base
+ */
+const update = async (body: IBoard): Promise&lt;IBoard> => {
+  try {
+    if (body.id) {
+      await Board.delete(body.id);
+    }
+    const board = new Board(body);
 
+    await board.save();
 
+    return board;
+  } catch (error) {
+    return error;
+  }
+};
 
+/**
+ * Remove board from data base
+ * @async
+ * @function
+ * @param {string|number} id - Board data
+ * @returns {Promise&lt;void>}
+ */
+const remove = async (id: string|number): Promise&lt;void> => {
+  try {
+    return await Board.delete(id);
+  } catch (error) {
+    return error;
+  }
+};
 
-
-    
-
-
-
-
-
+export {
+  get,
+  getAll,
+  save,
+  update,
+  remove,
+};</code></pre>
+        </article>
+    </section>
 
 
 

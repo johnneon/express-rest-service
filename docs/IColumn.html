@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Global</title>
+  <title> IColumn</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,8 +73,8 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Title</p>
-                    <h1>Global</h1>
+                    <p>Interface</p>
+                    <h1>IColumn</h1>
                 </header>
                 
 
@@ -85,7 +85,7 @@
 
 <header>
     
-        <h2></h2>
+        <h2>IColumn</h2>
         
     
 </header>
@@ -94,102 +94,17 @@
     <div class="container-overview">
     
         
+            <div class="description"><p>Column model</p></div>
+        
 
         
 
 
-<dl class="details">
+    <h5 class="subsection-title">Properties:</h5>
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Methods</h1>
-            <div class="members">
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="greetings">
-        <a class="href-link" href="#greetings">#</a>
-        
-        <span class="code-name">
-            
-                greetings<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Middleware for greeting the servise</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 <div class="table-container">
-    <table class="params table">
+    <table class="props table">
         <thead>
         <tr>
             
@@ -198,6 +113,8 @@
 
             <th>Type</th>
 
+            
+            <th>Attributes</th>
             
 
             
@@ -208,86 +125,101 @@
 
         <tbody>
         
-
             
 <tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
+    
+        <td class="name"><code>id</code></td>
+    
 
-  <td class="type">
-  
-      
-<span class="param-type">Request</span>
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+|
 
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Request object</p></td>
-</tr>
+<span class="param-type">number</span>
 
 
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
         
 
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
+        
+        </td>
+    
 
-  <td class="type">
-  
-      
-<span class="param-type">Response</span>
+    
 
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Response object</p></td>
+    <td class="description last"><p>Column ID</p></td>
 </tr>
-
 
         
-
             
 <tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
+    
+        <td class="name"><code>title</code></td>
+    
 
-  <td class="type">
-  
-      
-<span class="param-type">NextFunction</span>
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
 
 
-  
-  </td>
+    
+    </td>
 
-  
+    
+        <td class="attributes">
+        
 
-  
+        
+        </td>
+    
 
-  <td class="description last"><p>Next function</p></td>
+    
+
+    <td class="description last"><p>Column title</p></td>
 </tr>
 
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>order</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Column order (optional)</p></td>
+</tr>
 
         
         </tbody>
     </table>
 </div>
-
-
 
 
 
@@ -324,196 +256,19 @@
 
     
         <p class="tag-source">
-            <a href="utils_greetings.ts.html" class="button">View Source</a>
+            <a href="types_IColumn.ts.html" class="button">View Source</a>
             <span>
-                <a href="utils_greetings.ts.html">utils/greetings.ts</a>, <a href="utils_greetings.ts.html#line10">line 10</a>
+                <a href="types_IColumn.ts.html">types/IColumn.ts</a>, <a href="types_IColumn.ts.html#line5">line 5</a>
             </span>
         </p>
     
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
         
-<span class="param-type">void</span>
-
-
+    
     </div>
     
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="transferBoardId">
-        <a class="href-link" href="#transferBoardId">#</a>
-        
-        <span class="code-name">
-            
-                transferBoardId<span class="signature">(req, _res, next)</span><span class="type-signature"> &rarr; {void}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Middleware for transport boardId</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">Request</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Request object</p></td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>_res</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">Response</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Response object</p></td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">NextFunction</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Next function</p></td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
     
 
     
@@ -528,78 +283,6 @@
 
     
 
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="utils_transferBoardId.ts.html" class="button">View Source</a>
-            <span>
-                <a href="utils_transferBoardId.ts.html">utils/transferBoardId.ts</a>, <a href="utils_transferBoardId.ts.html#line10">line 10</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">void</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-            </div>
-        </div>
     
 
     
