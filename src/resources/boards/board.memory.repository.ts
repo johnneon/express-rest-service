@@ -16,7 +16,7 @@ const getAll = async (): Promise<IBoard[]> => {
   try {
     const boards = Board.getAll();
   
-    return boards;
+    return await boards;
   } catch (error) {
     return error;
   }
