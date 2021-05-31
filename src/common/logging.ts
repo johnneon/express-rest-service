@@ -73,4 +73,4 @@ const logger = morgan(
   { stream: { write: winston.stream } }
 )
 
-export { logger };
+export { logger, winston };
