@@ -17,7 +17,7 @@ export class BadRequestError extends Error implements IHttpError {
    */
   status: number;
   
-  constructor(message: string) {
+  constructor(message?: string) {
     super(message ?? getReasonPhrase(BAD_REQUEST));
     this.status = BAD_REQUEST;
   }

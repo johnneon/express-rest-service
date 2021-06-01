@@ -17,7 +17,7 @@ export class NotFoundError extends Error implements IHttpError {
    */
   status: number;
 
-  constructor(entity: string, params: SimpleStringEntity, message: string) {
+  constructor(entity: string, params: SimpleStringEntity, message?: string) {
     super(
       message ?? `Could not find ${entity} with: ${JSON.stringify(params)}`
     );

@@ -9,6 +9,7 @@ import taskRouter from './resources/tasks/task.router';
 import { transferBoardId } from './utils/transferBoardId';
 import { greetings } from './utils/greetings';
 import { logger } from './common/logging';
+import { errorHandler } from './errors/errorHandling';
 
 const app: Application = express();
 const swaggerDocument = YAML.load(join(__dirname, '../doc/api.yaml'));
@@ -30,5 +31,7 @@ app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 
 boardRouter.use('/:id/tasks', transferBoardId, taskRouter);
+
+app.use(errorHandler);
 
 export default app;

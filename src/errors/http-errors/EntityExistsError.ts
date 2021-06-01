@@ -16,7 +16,7 @@ export class EntityExistsError extends Error implements IHttpError {
    */
   status: number;
   
-  constructor(message: string) {
+  constructor(message?: string) {
     super(message ?? getReasonPhrase(EXPECTATION_FAILED));
     this.status = EXPECTATION_FAILED;
   }

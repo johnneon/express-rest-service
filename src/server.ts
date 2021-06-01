@@ -5,9 +5,10 @@ import { appErrorsHandler } from './errors/appErrorsHandling';
 
 const { PORT } = config;
 
+
 app.listen(PORT, () => {
-  console.log(`App is running on http://localhost:${PORT}`);
-  
+  winston.info(`App is running on http://localhost:${PORT}`);
+
   /**
    * Hang up error handling
    */

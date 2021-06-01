@@ -28,17 +28,17 @@ export const get =
  * Save board
  * @function
  * @param {IBoard} board - Board data to register 
- * @returns {Promise<IBoard>} - Returns the saved board
+ * @returns {Promise<IBoard|null>} - Returns the saved board
  */
-export const save = ({ body }: Request): Promise<IBoard> => boardsRepo.save(body);
+export const save = ({ body }: Request): Promise<IBoard | null> => boardsRepo.save(body);
 
 /**
  * Update board in data base
  * @function
  * @param {Request} req - Express req data
- * @returns {Promise<IBoard>} - Returns the updated board
+ * @returns {Promise<IBoard|null>} - Returns the updated board
  */
-export const update = ({ body, params }: Request): Promise<IBoard> => {
+export const update = ({ body, params }: Request): Promise<IBoard | null> => {
   const { id } = params;
     return boardsRepo.update({ id, ...body })
   };
@@ -48,10 +48,12 @@ export const update = ({ body, params }: Request): Promise<IBoard> => {
  * @async
  * @function
  * @param {string|number} id - Board data
- * @returns {Promise<void>}
+ * @returns {Promise<IBoard|null>}
  */
-export const remove = async (id: string|number): Promise<void> => {
-  await boardsRepo.remove(id);
+export const remove = async (id: string|number): Promise<IBoard | null> => {
+  const board = await boardsRepo.remove(id);
   await removeAllById(id);
+
+  return board;
 };
 

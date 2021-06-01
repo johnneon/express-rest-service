@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="AuthenticationError.html">AuthenticationError</a></li><li><a href="BadRequestError.html">BadRequestError</a></li><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="EntityExistsError.html">EntityExistsError</a></li><li><a href="NotFoundError.html">NotFoundError</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="IHttpError.html">IHttpError</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appErrorsHandler">appErrorsHandler</a></li><li><a href="global.html#boardDataValidation">boardDataValidation</a></li><li><a href="global.html#errorHandler">errorHandler</a></li><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#taskDataValidation">taskDataValidation</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li><li><a href="global.html#userDataValidation">userDataValidation</a></li></ul></div>
                 
             </nav>
         </div>
@@ -115,6 +115,10 @@ const getAll = async (): Promise&lt;IUser[]> => {
 const get = async (id: string|number): Promise&lt;IUser | null> => {
   try {
     const user = await User.getUserById(id);
+
+    if (!user) {
+      return null;
+    }
   
     return user;
   } catch (error) {
@@ -129,8 +133,14 @@ const get = async (id: string|number): Promise&lt;IUser | null> => {
  * @param {IUser} user - User data to register 
  * @returns {Promise&lt;IUser>} - Returns the saved user from data base
  */
-const save = async ({ login, name, password }: IUser): Promise&lt;IUser> => {
+const save = async ({ login, name, password }: IUser): Promise&lt;IUser | null> => {
   try {
+    const condidate = await User.getUserBySelector(login, 'login');
+
+    if (condidate) {
+      return null;
+    }
+
     const user = new User({login, name, password});
 
     await user.save();
@@ -146,18 +156,23 @@ const save = async ({ login, name, password }: IUser): Promise&lt;IUser> => {
  * @async
  * @function
  * @param {IUser} body - User data
- * @returns {Promise&lt;IUser>} - Returns the updated user from data base
+ * @returns {Promise&lt;IUser|null>} - Returns the updated user from data base
  */
-const update = async (body: IUser): Promise&lt;IUser> => {
+const update = async (body: IUser): Promise&lt;IUser | null> => {
   try {
     if (body.id) {
+      const condidate = await User.getUserById(body.id);
+
+      if (!condidate) {
+        return null;
+      }
       await User.delete(body.id);
     }
-    const user = new User(body);
+    const newUser = new User(body);
 
-    await user.save();
+    await newUser.save();
 
-    return user;
+    return newUser;
   } catch (error) {
     return error;
   }
@@ -169,11 +184,19 @@ const update = async (body: IUser): Promise&lt;IUser> => {
  * @async
  * @function
  * @param {string|number} id - User data
- * @returns {Promise&lt;void>}
+ * @returns {Promise&lt;IUser | null>}
  */
-const remove = async (id: string|number): Promise&lt;void> => {
+const remove = async (id: string|number): Promise&lt;IUser | null> => {
   try {
-    return await User.delete(id);
+    const user = await User.getUserById(id);
+
+    if (!user) {
+      return null;
+    }
+   
+    await User.delete(id);
+
+    return user;
   } catch (error) {
     return error;
   }

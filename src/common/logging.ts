@@ -24,7 +24,6 @@ const options = {
     customFormat,
     level: 'error',
     filename: `${LOG_DIRECTORY}/exceptions.log`,
-    handleExceptions: true,
     json: true,
     maxsize: 1024 * 5000,
     maxFiles: 5,
@@ -43,34 +42,30 @@ const options = {
     customFormat,
     level: 'info',
     filename: `${LOG_DIRECTORY}/app.log`,
-    handleExceptions: true,
     json: true,
     maxsize: 1024 * 5000,
     maxFiles: 5,
     colorize: false
+  },
+  console: {
+    format: combine(colorize(), cli()),
   }
 };
 
 const winston = createLogger({
   transports: [
     new File(options.fileError),
-    new File(options.fileInfo)
+    new File(options.fileInfo),
+    new Console(options.console),
   ],
   exceptionHandlers: [new File(options.fileUnhandled)]
 });
 
-winston.add(
-  new Console({
-    format: combine(colorize(), cli()),
-    handleExceptions: true,
-  })
-);
-
 winston.stream = (message) => winston.info(message);
 
 const logger = morgan(
-  ':method :status :url \n Body: :body \n Query parameters: :params \n :response-time ms',
+  ':method :status :url \n Body: :body \n Query params: :params \n :response-time ms',
   { stream: { write: winston.stream } }
-)
+);
 
 export { logger, winston };
