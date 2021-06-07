@@ -27,11 +27,15 @@ const getAll = async (): Promise<IBoard[]> => {
  * @async
  * @function
  * @param {string|number} id - Board id
- * @returns {Promise<IBoard>} Returns the searched board from data base
+ * @returns {Promise<IBoard|null>} Returns the searched board from data base
  */
 const get = async (id: string|number): Promise<IBoard | null> => {
   try {
     const board = await Board.getBoardById(id);
+
+    if (!board) {
+      return null;
+    }
   
     return board;
   } catch (error) {
@@ -44,11 +48,15 @@ const get = async (id: string|number): Promise<IBoard | null> => {
  * @async
  * @function
  * @param {IBoard} board - Board data to register 
- * @returns {Promise<IBoard>} - Returns the saved board from data base
+ * @returns {Promise<IBoard|null>} - Returns the saved board from data base
  */
-const save = async ({ title, columns }: IBoard): Promise<IBoard> => {
+const save = async ({ title, columns }: IBoard): Promise<IBoard | null> => {
   try {
     const board = new Board({ title, columns });
+
+    if (!board) {
+      return null;
+    }
 
     await board.save();
 
@@ -63,11 +71,15 @@ const save = async ({ title, columns }: IBoard): Promise<IBoard> => {
  * @async
  * @function
  * @param {IBoard} body - Board data
- * @returns {Promise<IBoard>} - Returns the updated board from data base
+ * @returns {Promise<IBoard|null>} - Returns the updated board from data base
  */
-const update = async (body: IBoard): Promise<IBoard> => {
+const update = async (body: IBoard): Promise<IBoard | null> => {
   try {
     if (body.id) {
+      const board = await Board.getBoardById(body.id);
+      if (!board) {
+        return null;
+      }
       await Board.delete(body.id);
     }
     const board = new Board(body);
@@ -85,11 +97,19 @@ const update = async (body: IBoard): Promise<IBoard> => {
  * @async
  * @function
  * @param {string|number} id - Board data
- * @returns {Promise<void>}
+ * @returns {Promise<IBoard|null>}
  */
-const remove = async (id: string|number): Promise<void> => {
+const remove = async (id: string|number): Promise<IBoard | null> => {
   try {
-    return await Board.delete(id);
+    const board = await Board.getBoardById(id);
+
+    if (!board) {
+      return null;
+    }
+    
+    await Board.delete(id);
+
+    return board;
   } catch (error) {
     return error;
   }

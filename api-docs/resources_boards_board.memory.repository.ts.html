@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="AuthenticationError.html">AuthenticationError</a></li><li><a href="BadRequestError.html">BadRequestError</a></li><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="EntityExistsError.html">EntityExistsError</a></li><li><a href="NotFoundError.html">NotFoundError</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="IHttpError.html">IHttpError</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appErrorsHandler">appErrorsHandler</a></li><li><a href="global.html#boardDataValidation">boardDataValidation</a></li><li><a href="global.html#errorHandler">errorHandler</a></li><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#taskDataValidation">taskDataValidation</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li><li><a href="global.html#userDataValidation">userDataValidation</a></li></ul></div>
                 
             </nav>
         </div>
@@ -103,7 +103,7 @@ const getAll = async (): Promise&lt;IBoard[]> => {
   try {
     const boards = Board.getAll();
   
-    return boards;
+    return await boards;
   } catch (error) {
     return error;
   }
@@ -114,11 +114,15 @@ const getAll = async (): Promise&lt;IBoard[]> => {
  * @async
  * @function
  * @param {string|number} id - Board id
- * @returns {Promise&lt;IBoard>} Returns the searched board from data base
+ * @returns {Promise&lt;IBoard|null>} Returns the searched board from data base
  */
 const get = async (id: string|number): Promise&lt;IBoard | null> => {
   try {
     const board = await Board.getBoardById(id);
+
+    if (!board) {
+      return null;
+    }
   
     return board;
   } catch (error) {
@@ -131,11 +135,15 @@ const get = async (id: string|number): Promise&lt;IBoard | null> => {
  * @async
  * @function
  * @param {IBoard} board - Board data to register 
- * @returns {Promise&lt;IBoard>} - Returns the saved board from data base
+ * @returns {Promise&lt;IBoard|null>} - Returns the saved board from data base
  */
-const save = async ({ title, columns }: IBoard): Promise&lt;IBoard> => {
+const save = async ({ title, columns }: IBoard): Promise&lt;IBoard | null> => {
   try {
     const board = new Board({ title, columns });
+
+    if (!board) {
+      return null;
+    }
 
     await board.save();
 
@@ -150,11 +158,15 @@ const save = async ({ title, columns }: IBoard): Promise&lt;IBoard> => {
  * @async
  * @function
  * @param {IBoard} body - Board data
- * @returns {Promise&lt;IBoard>} - Returns the updated board from data base
+ * @returns {Promise&lt;IBoard|null>} - Returns the updated board from data base
  */
-const update = async (body: IBoard): Promise&lt;IBoard> => {
+const update = async (body: IBoard): Promise&lt;IBoard | null> => {
   try {
     if (body.id) {
+      const board = await Board.getBoardById(body.id);
+      if (!board) {
+        return null;
+      }
       await Board.delete(body.id);
     }
     const board = new Board(body);
@@ -172,11 +184,19 @@ const update = async (body: IBoard): Promise&lt;IBoard> => {
  * @async
  * @function
  * @param {string|number} id - Board data
- * @returns {Promise&lt;void>}
+ * @returns {Promise&lt;IBoard|null>}
  */
-const remove = async (id: string|number): Promise&lt;void> => {
+const remove = async (id: string|number): Promise&lt;IBoard | null> => {
   try {
-    return await Board.delete(id);
+    const board = await Board.getBoardById(id);
+
+    if (!board) {
+      return null;
+    }
+    
+    await Board.delete(id);
+
+    return board;
   } catch (error) {
     return error;
   }

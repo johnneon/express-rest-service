@@ -97,6 +97,25 @@ export class Database {
   }
 
   /**
+   * Get one by selector
+   * @param {{ selector: string, value: string }} data - Object with couple selector and value to get
+   * @param {string} name - Name of place to save
+   * @returns {Object[]} - Returns entity
+   */
+   getBySelector<T>({selector, value}: SelectorValue, name: EntitysNames): T | null {
+    if (Array.isArray(this[name])) {
+      const condidate = (this[name] as []).find((entity) => entity[selector] === value);
+
+      if (!condidate) {
+        return null;
+      }
+
+      return condidate;
+    }
+    return null;
+  }
+
+  /**
    * Get entity by id
    * @param {string|number} id - Id of entity in db
    * @param {string} name - Name of place to save

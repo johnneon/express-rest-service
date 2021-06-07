@@ -8,3 +8,7 @@ export type EntitysTypes = IBoard | IUser | ITask;
 export type EntitysTypesAnd = IBoard & IUser & ITask;
 
 export type SelectorValue = {selector: string, value: string|number};
+
+export type SimpleStringEntity = {
+  [string: string]: string;
+}

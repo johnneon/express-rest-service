@@ -39,9 +39,9 @@ export const save = ({ body }: Request): Promise<ITask> => tasksRepo.save({ ...b
  * Update user in data base
  * @function
  * @param {Request} req - Express request object
- * @returns {Promise<ITask>} - Returns the updated task
+ * @returns {Promise<ITask|null>} - Returns the updated task
  */
-export const update = ({ body, params }: Request): Promise<ITask> => {
+export const update = ({ body, params }: Request): Promise<ITask | null> => {
   const { id } = params;
   return tasksRepo.update({ ...body, id });
 };
@@ -50,11 +50,11 @@ export const update = ({ body, params }: Request): Promise<ITask> => {
  * Remove user
  * @function
  * @param {Request} req - Express request object 
- * @returns {Promise<void>}
+ * @returns {Promise<ITask|null>}
  */
-export const remove = ({ params }: Request): Promise<void> => {
+export const remove = ({ params }: Request): Promise<ITask | null> => {
   const { id } = params;
-  return tasksRepo.remove(id as string)
+  return tasksRepo.remove(id as string);
 };
 
 /**

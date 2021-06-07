@@ -22,4 +22,5 @@ export const config = {
   MONGO_CONNECTION_STRING,
   JWT_SECRET_KEY,
   AUTH_MODE,
+  LOG_DIRECTORY: join(__dirname, '../../logs'),
 };

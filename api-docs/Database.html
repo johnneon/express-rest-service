@@ -66,7 +66,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="AuthenticationError.html">AuthenticationError</a></li><li><a href="BadRequestError.html">BadRequestError</a></li><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="EntityExistsError.html">EntityExistsError</a></li><li><a href="NotFoundError.html">NotFoundError</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="IHttpError.html">IHttpError</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appErrorsHandler">appErrorsHandler</a></li><li><a href="global.html#boardDataValidation">boardDataValidation</a></li><li><a href="global.html#errorHandler">errorHandler</a></li><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#taskDataValidation">taskDataValidation</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li><li><a href="global.html#userDataValidation">userDataValidation</a></li></ul></div>
                 
             </nav>
         </div>
@@ -1088,7 +1088,7 @@
         <p class="tag-source">
             <a href="db_db.ts.html" class="button">View Source</a>
             <span>
-                <a href="db_db.ts.html">db/db.ts</a>, <a href="db_db.ts.html#line95">line 95</a>
+                <a href="db_db.ts.html">db/db.ts</a>, <a href="db_db.ts.html#line111">line 111</a>
             </span>
         </p>
     
@@ -1491,7 +1491,7 @@
         <p class="tag-source">
             <a href="db_db.ts.html" class="button">View Source</a>
             <span>
-                <a href="db_db.ts.html">db/db.ts</a>, <a href="db_db.ts.html#line83">line 83</a>
+                <a href="db_db.ts.html">db/db.ts</a>, <a href="db_db.ts.html#line99">line 99</a>
             </span>
         </p>
     
@@ -1531,6 +1531,206 @@
         <label>Type: </label>
         
 <span class="param-type">Object</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="getBySelector">
+        <a class="href-link" href="#getBySelector">#</a>
+        
+        <span class="code-name">
+            
+                getBySelector<span class="signature">(data, name)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Get one by selector</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Object with couple selector and value to get</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>name</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Name of place to save</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="db_db.ts.html" class="button">View Source</a>
+            <span>
+                <a href="db_db.ts.html">db/db.ts</a>, <a href="db_db.ts.html#line83">line 83</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><ul>
+<li>Returns entity</li>
+</ul></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array.&lt;Object></span>
 
 
     </div>

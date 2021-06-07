@@ -2,7 +2,7 @@ import { ITask } from "../../types/ITask";
 import { Task } from "./task.model";
 
 /**
- * User repository module
+ * Task repository module
  * @module Task repository
  */
 
@@ -29,6 +29,10 @@ const getAll = async (boardId: string): Promise<ITask[]> => {
 const get = async (id: string|number): Promise<ITask | null> => {
   try {
     const task = await Task.getTaskById(id);
+
+    if (!task) {
+      return null;
+    }
   
     return task;
   } catch (error) {
@@ -74,11 +78,17 @@ const save = async ({
  * @async
  * @function
  * @param {ITask} body - Task data
- * @returns {Promise<ITask>} - Returns the updated task from data base
+ * @returns {Promise<ITask|null>} - Returns the updated task from data base
  */
-const update = async (body: ITask): Promise<ITask> => {
+const update = async (body: ITask): Promise<ITask | null> => {
   try {
     if (body.id) {
+      const condidate = await Task.getTaskById(body.id);
+
+      if (!condidate) {
+        return null;
+      }
+      
       await Task.delete(body.id);
     }
     const task = new Task(body);
@@ -96,11 +106,19 @@ const update = async (body: ITask): Promise<ITask> => {
  * @async
  * @function
  * @param {string|number} id - Task data
- * @returns {Promise<void>}
+ * @returns {Promise<ITask|null>}
  */
-const remove = async (id: string|number): Promise<void> => {
+const remove = async (id: string|number): Promise<ITask | null> => {
   try {
-    return await Task.delete(id);
+    const condidate = await Task.getTaskById(id);
+
+    if (!condidate) {
+      return null;
+    }
+
+    await Task.delete(id);
+
+    return condidate;
   } catch (error) {
     return error;
   }

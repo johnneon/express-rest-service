@@ -28,6 +28,10 @@ const getAll = async (): Promise<IUser[]> => {
 const get = async (id: string|number): Promise<IUser | null> => {
   try {
     const user = await User.getUserById(id);
+
+    if (!user) {
+      return null;
+    }
   
     return user;
   } catch (error) {
@@ -42,8 +46,14 @@ const get = async (id: string|number): Promise<IUser | null> => {
  * @param {IUser} user - User data to register 
  * @returns {Promise<IUser>} - Returns the saved user from data base
  */
-const save = async ({ login, name, password }: IUser): Promise<IUser> => {
+const save = async ({ login, name, password }: IUser): Promise<IUser | null> => {
   try {
+    const condidate = await User.getUserBySelector(login, 'login');
+
+    if (condidate) {
+      return null;
+    }
+
     const user = new User({login, name, password});
 
     await user.save();
@@ -59,18 +69,23 @@ const save = async ({ login, name, password }: IUser): Promise<IUser> => {
  * @async
  * @function
  * @param {IUser} body - User data
- * @returns {Promise<IUser>} - Returns the updated user from data base
+ * @returns {Promise<IUser|null>} - Returns the updated user from data base
  */
-const update = async (body: IUser): Promise<IUser> => {
+const update = async (body: IUser): Promise<IUser | null> => {
   try {
     if (body.id) {
+      const condidate = await User.getUserById(body.id);
+
+      if (!condidate) {
+        return null;
+      }
       await User.delete(body.id);
     }
-    const user = new User(body);
+    const newUser = new User(body);
 
-    await user.save();
+    await newUser.save();
 
-    return user;
+    return newUser;
   } catch (error) {
     return error;
   }
@@ -82,11 +97,19 @@ const update = async (body: IUser): Promise<IUser> => {
  * @async
  * @function
  * @param {string|number} id - User data
- * @returns {Promise<void>}
+ * @returns {Promise<IUser | null>}
  */
-const remove = async (id: string|number): Promise<void> => {
+const remove = async (id: string|number): Promise<IUser | null> => {
   try {
-    return await User.delete(id);
+    const user = await User.getUserById(id);
+
+    if (!user) {
+      return null;
+    }
+   
+    await User.delete(id);
+
+    return user;
   } catch (error) {
     return error;
   }

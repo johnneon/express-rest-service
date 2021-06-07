@@ -104,6 +104,26 @@ export class User {
   }
 
   /**
+   * Get user by selector
+   * @async
+   * @param {string|number} id - User id
+   * @returns {Promise<IUser>} - Returns data object
+   */
+  static async getUserBySelector(value: string|number, selector?: string): Promise<IUser | null> {
+    const db = new Database();
+    const condidate = db.getBySelector<IUser>(
+      { selector: selector || 'login', value },
+      USERS as EntitysNames
+    );
+
+    if (!condidate) {
+      return null;
+    }
+
+    return condidate;
+  }
+
+  /**
    * Get all users
    * @async
    * @returns {IUser[]} - Returns users array
