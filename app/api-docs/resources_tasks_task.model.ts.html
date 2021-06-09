@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> resources/tasks/task.model.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Board%2520repository.html">Board repository</a></li><li><a href="module-Board%2520service.html">Board service</a></li><li><a href="module-Task%2520repository.html">Task repository</a></li><li><a href="module-Task%2520service.html">Task service</a></li><li><a href="module-User%2520repository.html">User repository</a></li><li><a href="module-User%2520service.html">User service</a></li></ul><h3>Classes</h3><ul><li><a href="AuthenticationError.html">AuthenticationError</a></li><li><a href="BadRequestError.html">BadRequestError</a></li><li><a href="Board.html">Board</a></li><li><a href="Database.html">Database</a></li><li><a href="EntityExistsError.html">EntityExistsError</a></li><li><a href="NotFoundError.html">NotFoundError</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Interfaces</h3><ul><li><a href="IBoard.html">IBoard</a></li><li><a href="IColumn.html">IColumn</a></li><li><a href="IHttpError.html">IHttpError</a></li><li><a href="ITask.html">ITask</a></li><li><a href="IUser.html">IUser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appErrorsHandler">appErrorsHandler</a></li><li><a href="global.html#boardDataValidation">boardDataValidation</a></li><li><a href="global.html#errorHandler">errorHandler</a></li><li><a href="global.html#greetings">greetings</a></li><li><a href="global.html#taskDataValidation">taskDataValidation</a></li><li><a href="global.html#transferBoardId">transferBoardId</a></li><li><a href="global.html#userDataValidation">userDataValidation</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>resources/tasks/task.model.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { v4 as uuid } from 'uuid';
+import { Database } from '../../db/db';
+import { CONSTANTS } from '../../common/constants';
+import { ITask } from '../../types/ITask';
+import { EntitysNames } from '../../types/simpleTypes';
+
+const { TASKS } = CONSTANTS;
+
+/**
+ * Task model
+ */
+export class Task {
+  id: number|string;
+
+  title;
+
+  order;
+
+  description;
+
+  userId: string | number | null;
+
+  boardId: string | number;
+
+  columnId: string | number;
+  
+  /**
+  * @param {ITask} task - Task data from request
+  */
+  constructor({
+    id = uuid(),
+    title = 'TASK',
+    order = 0,
+    description = 'Some desc',
+    userId = '',
+    boardId = '',
+    columnId = '',
+  }: ITask) {
+    /**
+     * @property {string|number} id - Task ID
+     */
+    this.id = id;
+
+    /**
+     * @property {string} title - Task title
+     */
+    this.title = title;
+
+    /**
+     * @property {number} order - Task order in column
+     */
+    this.order = order;
+
+    /**
+     * @property {string} description - Task description
+     */
+    this.description = description;
+
+    /**
+     * @property {string|number|null} userId - User ID
+     */
+    this.userId = userId;
+
+    /**
+     * @property {string|number} boardId - Board ID
+     */
+    this.boardId = boardId;
+
+    /**
+     * @property {string|number} columnId - Column ID
+     */
+    this.columnId = columnId;
+  }
+
+  /**
+   * Makes task responseble
+   * @param {ITask} task User data 
+   * @returns {ITask} - Responseble object
+   */
+   static toResponse(task: ITask): ITask {
+    return task;
+  }
+
+  /**
+   * Save task to data base
+   * @async
+   * @property {Function} save
+   * @returns {Promise&lt;void>}
+   */
+  async save(): Promise&lt;void> {
+    const db = new Database();
+
+    db.save(this, TASKS as EntitysNames);
+  }
+
+  /**
+   * Delete many task by id
+   * @async
+   * @param {string|number} id - Sekector id
+   * @returns {Promise&lt;void>}
+   */
+  static async deleteManyById(id: string|number): Promise&lt;void> {
+    const db = new Database();
+
+    db.deleteManyBySelector({ selector: 'boardId', value: id }, TASKS as EntitysNames);
+  }
+
+  /**
+   * Delete task by id
+   * @async
+   * @param {string|number} id - Task id
+   * @returns {Promise&lt;void>}
+   */
+  static async delete(id: string|number): Promise&lt;void> {
+    const db = new Database();
+
+    db.deleteById(id, TASKS as EntitysNames);
+  }
+
+  /**
+   * Get task by id
+   * @async
+   * @param {string|number} id - Task id
+   * @returns {Promise&lt;ITask>} - Returns task object
+   */
+  static async getTaskById(id: string|number): Promise&lt;ITask | null> {
+    const db = new Database();
+
+    return db.getById&lt;ITask>(id, TASKS as EntitysNames);
+  }
+
+  /**
+   * Get all tasks
+   * @async
+   * @param {string|number} id - Board id
+   * @param {string} - Selector for search
+   * @returns {Promise&lt;ITask[]>} - Returns tasks array
+   */
+  static async getAll(id: string|number, selector?: string): Promise&lt;ITask[]> {
+    const tasks = new Database()
+      .getAllBySelector(
+        { selector: selector || 'boardId', value: id },
+        TASKS as EntitysNames
+      );
+    return tasks as [];
+  }
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
