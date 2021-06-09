@@ -1,0 +1,10 @@
+logs/
+.git
+.gitgub
+api-docs
+docs
+doc
+test
+.cache
+*.md
+**/*.class
